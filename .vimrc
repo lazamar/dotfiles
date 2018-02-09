@@ -23,6 +23,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Townk/vim-autoclose'
 Plug 'neomake/neomake'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Generic language support
 Plug 'Shougo/neocomplete.vim'
