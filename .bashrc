@@ -127,5 +127,5 @@ GIT_PS1_SHOWCOLORHINTS=true
 bind -r '\C-s'
 stty -ixon
 
-# Swap Escape and capslock keys
-setxkbmap -option caps:escape
+export NVM_DIR="/home/marcelo/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

@@ -60,14 +60,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" User relative numbers
-:set number relativenumber
-:augroup numbertoggle
-:  autocmd!
-:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-:augroup END
-
+" User numbers
+set number
 " Highlight search matches
 set hlsearch			
 
@@ -160,6 +154,12 @@ let $FZF_DEFAULT_COMMAND ='find . -not -path "./node_modules/*" -not -path "./el
 let g:airline_powerline_fonts = 1 
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1 
+
+" Git gutter
+" Disable from start
+let g:gitgutter_enabled = 0
+" Diable all key mappings
+let g:gitgutter_map_keys = 0
 " =======================================
 "	KEY MAPPINGS
 " =======================================
@@ -193,3 +193,6 @@ nnoremap <leader>f :NERDTreeFind<CR>
 nmap <C-_>   <Plug>NERDCommenterToggle
 vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
+" Make d delete stuff instead of cutting
+nnoremap d "_d
+vnoremap d "_d
