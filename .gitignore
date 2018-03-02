@@ -1,0 +1,8 @@
+*
+!.gitignore
+!.bashrc
+!.vimrc
+!.eslint.json
+!.atom/keymap.cson
+!.atom/config.cson
+!.profile
