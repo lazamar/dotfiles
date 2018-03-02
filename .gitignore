@@ -4,3 +4,10 @@
 !.vimrc
 !.eslint.json
 !.profile
+
+# Atom Stuff
+!.atom/
+.atom/*
+!.atom/config.cson
+!.atom/keymap.cson
+!.atom/packages.list

@@ -1,0 +1,7 @@
+'.platform-win32, .platform-linux':
+  'ctrl-\\': 'tree-view:toggle-focus'
+  'alt-\\': 'tree-view:toggle'
+  'ctrl-0': 'pane:show-next-item'
+  'ctrl-9': 'pane:show-previous-item'
+  'ctrl-)': 'pane:move-item-right'
+  'ctrl-(': 'pane:move-item-left'

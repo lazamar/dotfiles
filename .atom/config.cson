@@ -1,0 +1,80 @@
+"*":
+  "advanced-open-file":
+    createDirectories: true
+    createFileInstantly: true
+  "atom-beautify":
+    css: {}
+    general:
+      _analyticsUserId: "2d9fcdbb-9d1b-47e7-95c0-534f96b5fcd2"
+    handlebars:
+      beautify_on_save: true
+    haskell: {}
+    js:
+      end_with_newline: true
+    nginx:
+      beautify_on_save: true
+  "atom-ternjs": {}
+  core:
+    disabledPackages: [
+      "linter-elm-make"
+    ]
+    packagesWithKeymapsDisabled: [
+      "line-number-color"
+      "github"
+    ]
+    telemetryConsent: "limited"
+    themes: [
+      "one-dark-ui"
+      "atom-material-syntax"
+    ]
+  editor:
+    showIndentGuide: true
+    tabLength: 4
+  "elm-format": {}
+  "exception-reporting":
+    userId: "a7878881-6d94-45d1-84c0-1cbdc679ac2d"
+  firacode: {}
+  "haskell-ghc-mod":
+    ghcModPath: "/home/marcelo/.local/bin/ghc-mod"
+  hasklig:
+    fontWeight: "regular"
+  "ide-haskell":
+    onSavePrettify: true
+    onSavePrettifyFormats:
+      "source*cabal": true
+    stylishHaskellPath: "/home/marcelo/.local/bin/stylish-haskell"
+  "line-number-color":
+    lineNumberColor: "#edc100"
+  linter: {}
+  "linter-eslint":
+    disableWhenNoEslintConfig: false
+    eslintrcPath: "/home/marcelo/.eslint.json"
+    globalNodePath: "/home/marcelo/.nvm/versions/node/v9.4.0"
+    lintHtmlFiles: true
+    useGlobalEslint: true
+  "linter-hlint": {}
+  "linter-ui-default":
+    panelHeight: 249
+  "markdown-preview":
+    useGitHubStyle: true
+  minimap:
+    plugins:
+      "git-diff": true
+      "git-diffDecorationsZIndex": 0
+      pigments: true
+      pigmentsDecorationsZIndex: 0
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+      showInStatusBar: true
+    prettierEslintOptions: {}
+    prettierOptions: {}
+    useEslint: true
+  "tree-view":
+    alwaysOpenExisting: true
+  "vim-mode-plus": {}
+  welcome:
+    showOnStartup: false
+".c2hs.source":
+  editor:
+    showIndentGuide: true
