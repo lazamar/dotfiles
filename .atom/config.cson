@@ -34,8 +34,7 @@
   "exception-reporting":
     userId: "a7878881-6d94-45d1-84c0-1cbdc679ac2d"
   firacode: {}
-  "haskell-ghc-mod":
-    ghcModPath: "/home/marcelo/.local/bin/ghc-mod"
+  "haskell-ghc-mod": {}
   hasklig:
     fontWeight: "regular"
   "ide-haskell":

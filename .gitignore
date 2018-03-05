@@ -4,6 +4,7 @@
 !.vimrc
 !.eslint.json
 !.profile
+!.stylish-haskell.yaml
 
 # Atom Stuff
 !.atom/
