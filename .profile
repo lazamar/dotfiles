@@ -17,7 +17,7 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 # set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH"
+PATH="$HOME/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH:$HOME/.cabal/bin"
 
 # Swap Escape and capslock keys
 setxkbmap -option caps:escape
