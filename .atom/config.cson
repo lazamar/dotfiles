@@ -48,12 +48,13 @@
   "linter-eslint":
     disableWhenNoEslintConfig: false
     eslintrcPath: "/home/marcelo/.eslint.json"
-    globalNodePath: "/home/marcelo/.nvm/versions/node/v9.4.0"
+    fixOnSave: true
+    globalNodePath: "/home/marcelo/.nvm/versions/node/v9.7.1"
     lintHtmlFiles: true
     useGlobalEslint: true
   "linter-hlint": {}
   "linter-ui-default":
-    panelHeight: 249
+    panelHeight: 166
   "markdown-preview":
     useGitHubStyle: true
   minimap:

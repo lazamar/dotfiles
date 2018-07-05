@@ -193,6 +193,3 @@ nnoremap <leader>f :NERDTreeFind<CR>
 nmap <C-_>   <Plug>NERDCommenterToggle
 vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
-" Make d delete stuff instead of cutting
-nnoremap d "_d
-vnoremap d "_d
