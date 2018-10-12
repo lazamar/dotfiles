@@ -34,3 +34,6 @@ export NVM_DIR="/home/marcelo/.nvm"
 
 # Remove scroll momentum
 synclient CoastingSpeed=0
+
+# Set key repeat rate to 150ms, up to  100  repetitions per second
+xset r rate 150 100
