@@ -13,3 +13,8 @@
 !.atom/config.cson
 !.atom/keymap.cson
 !.atom/packages.list
+
+# urxvt Terminal
+!.urxvt/
+!.urxvt/ext/
+!.urxvt/ext/*
