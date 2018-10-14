@@ -19,11 +19,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Townk/vim-autoclose'
 Plug 'neomake/neomake'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 
 " Generic language support
 Plug 'Shougo/neocomplete.vim'
@@ -43,8 +40,6 @@ Plug 'sonph/onehalf', {'rtp': 'vim/'}
 Plug 'sickill/vim-monokai'
 Plug 'jeffkreeftmeijer/vim-dim'
 Plug 'vim-airline/vim-airline'
-Plug 'ryanoasis/vim-devicons'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
 " Initialise vim-plug
 call plug#end()
@@ -120,7 +115,7 @@ autocmd BufWritePost *.js,*.jsx call prettier#run(1)
 
 " Colour theme 
 syntax on
-colorscheme onehalfdark
+colorscheme dim
 set t_Co=256
 
 if (has("termguicolors"))

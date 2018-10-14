@@ -1,0 +1,93 @@
+! xscreensaver ---------------------------------------------------------------
+
+!font settings
+xscreensaver.Dialog.headingFont:        -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.bodyFont:           -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.labelFont:          -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.unameFont:          -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.buttonFont:         -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.Dialog.dateFont:           -*-dina-medium-r-*-*-10-*-*-*-*-*-*-*
+xscreensaver.passwd.passwdFont:         -*-dina-bold-r-*-*-10-*-*-*-*-*-*-*
+!general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground:         #EDEDED
+xscreensaver.Dialog.background:         #202020
+xscreensaver.Dialog.topShadowColor:     #202024
+xscreensaver.Dialog.bottomShadowColor:  #202024
+xscreensaver.Dialog.Button.foreground:  #EDEDFF
+xscreensaver.Dialog.Button.background:  #444
+!username/password input box and date text colour
+xscreensaver.Dialog.text.foreground:    #EDEDFF
+xscreensaver.Dialog.text.background:    #444
+xscreensaver.Dialog.internalBorderWidth:24
+xscreensaver.Dialog.borderWidth:        0
+xscreensaver.Dialog.shadowThickness:    2
+!timeout bar (background is actually determined by Dialog.text.background)
+xscreensaver.passwd.thermometer.foreground:  #A9B7C4
+xscreensaver.passwd.thermometer.background:  #202020
+xscreensaver.passwd.thermometer.width:       8
+!datestamp format--see the strftime(3) manual page for details
+xscreensaver.dateFormat:    %I:%M%P %a %b %d, %Y
+
+
+
+! urxvt ---------------------------------------------------------------
+URxvt*buffered: true
+URxvt*cursorBlink: true
+URxvt*underlineColor: yellow
+URxvt*font: xft:Inconsolata Nerd Font Mono:size=11, xft:DejaVu Sans:size=11
+URxvt*letterSpace: -1
+URxvt*depth: 32
+URxvt*borderless: 1
+URxvt*scrollBar: false
+URxvt*loginShell: true
+Urxvt*secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
+URxvt*saveLines: 5000
+URxvt*termName: rxvt-unicode
+
+!! -- Extensions --
+URxvt.perl-ext-common: default,matcher,resize-font,url-select,keyboard-select
+URxvt.colorUL:colorUL#4682B4
+!! url-select
+URxvt.keysym.M-u:keysymperl:url-select:select_next
+URxvt.url-select.launcher: linkhandler
+URxvt.url-select.underline: true
+!! keyboard-select:
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+!! resize-font
+URxvt.resize-font.smaller:smallerC-Down
+URxvt.resize-font.bigger:biggerC-Up
+!! Matcher
+URxvt.url-launcher:launcherlinkhandler
+URxvt.matcher.button: 1
+
+!! -- Colors --
+*background:        	#263238
+*foreground:        	#FFFFFF
+*cursorColor:           #DCDCDC
+*pointerColorBackground:#586E75
+*pointerColorForeground:#93A1A1
+
+!! black dark/light
+*color0:                #3F3F3F
+*color8:                #607D8B
+!! red dark/light
+*color1:                #F44336
+*color9:                #FF6F65
+!! green dark/light
+*color2:                #4CAF50
+*color10:               #73C990
+!! yellow dark/light
+*color3:                #FFC107
+*color11:               #FFD17D
+!! blue dark/light
+*color4:                #2196F3
+*color12:               #46A5D6
+!! magenta dark/light
+*color5:                #E91E63
+*color13:               #ED5D8E
+!! cyan dark/light
+*color6:                #00BCD4
+*color14:               #26CEE4
+!! white dark/light
+*color7:                #D5DDE2
+*color15:               #FFFFFF

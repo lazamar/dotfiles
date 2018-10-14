@@ -1,7 +1,6 @@
 *
 !.gitignore
 !.bashrc
-!.vimrc
 !.eslint.json
 !.eslintrc.js
 !.profile
@@ -18,3 +17,14 @@
 !.urxvt/
 !.urxvt/ext/
 !.urxvt/ext/*
+
+# Vim
+!.vimrc
+
+# Xmonad
+!.Xdefaults
+!.xsessionrc
+!.xmobarrc
+!.xmonad
+.xmonad/*
+!.xmonad/xmonad.hs
