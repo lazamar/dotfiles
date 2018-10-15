@@ -2,6 +2,8 @@
 
 # Load resources
 
+eval `dbus-launch --auto-syntax`
+
 xrdb -merge .Xresources
 
 # Fire up apps

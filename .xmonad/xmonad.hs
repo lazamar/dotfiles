@@ -10,7 +10,7 @@ myModMask = mod4Mask
 altMask = mod1Mask
 
 main = do
-        xmproc <- spawnPipe "xmobar ~/.xmobarrc"
+        xmproc <- spawnPipe "xmobar ~/.xmobarrc.hs"
         xmonad $ defaultConfig
            { manageHook = manageDocks <+> manageHook defaultConfig
            , layoutHook = avoidStruts  $  layoutHook defaultConfig
@@ -22,5 +22,6 @@ main = do
            , focusedBorderColor = "#2196F3"
            } `additionalKeys`
            [ -- Kill windows with Alt-F4
-            ((altMask                , xK_F4    ), kill)
+            ((altMask, xK_F4 ), kill)
+           ,((altMask, xK_b  ), sendMessage ToggleStruts)
            ] 
