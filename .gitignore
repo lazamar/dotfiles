@@ -28,3 +28,6 @@
 !.xmonad
 .xmonad/*
 !.xmonad/xmonad.hs
+
+# Xmobar
+!.xmobarrc.hs
