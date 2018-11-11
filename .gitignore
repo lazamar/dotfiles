@@ -31,3 +31,7 @@
 
 # Xmobar
 !.xmobarrc.hs
+
+# Mac OS config
+!OSX/
+!OSX/*
