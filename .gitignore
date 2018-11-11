@@ -21,6 +21,10 @@
 # Vim
 !.vimrc
 
+# Sublime
+!.sublime_backup
+!.sublime_backup/*
+
 # Xmonad
 !.Xdefaults
 !.xsessionrc
