@@ -36,59 +36,13 @@ unset color_prompt force_color_prompt
 # Prompt with GIT info
 # ==============================================================================
 
-function prompt_setup {
-    # Some colors
-    local TXT_WHITE="\e[97m"
-    local TXT_GREY="\e[90m"
-    local TXT_BLUE="\e[34m"
-    local TXT_BLACK="\e[30m"
-    local TXT_YELLOW="\e[93m"
-    local TXT_DEFAULT="\e[39m"
-    local TXT_BOLD="\e[1m"
-    local TXT_BOLD_RESET="\e[0m"
-    local BG_WHITE="\e[107m"
-    local BG_GREEN="\e[100m"
-    local BG_BLUE="\e[44m"
-    local BG_DEFAULT="\e[49m"
-    local INFO_USER="\u"
-    local INFO_PATH="\w\a"
-    local INFO_GIT=
-
-
-    local __git_info="$(__git_ps1)"
-    local __git_branch="$(git branch 2>/dev/null | grep '^*' | colrm 1 2)"
-    local __git_icon=
-
-    # colour branch name depending on state
-    if [[ "$__git_info" =~ "*" ]]; then     # if repository is dirty
-        __git_icon="⚡"
-    elif [[ "$__git_info" =~ "$" ]]; then   # if there is something stashed
-        __git_icon="stashed"
-    elif [[ "$__git_info" =~ "%" ]]; then   # if there are only untracked files
-        __git_icon="untracked"
-    elif [[ "$__git_info" =~ "+" ]]; then   # if there are staged files
-        __git_icon="*"
-    else                                    # nothing to commit
-        __git_icon=
-    fi
-
-    local BLOCK_GIT=
-    # We only show the git block if we are in a git repository
-    if [ "$__git_branch" != "" ]; then
-        INFO_GIT="$__git_branch $TXT_YELLOW$__git_icon"
-        BLOCK_GIT="$TXT_BOLD$BG_BLUE$TXT_WHITE  $INFO_GIT $TXT_BOLD_RESET$TXT_BLUE"
-    else
-        BLOCK_GIT=
-    fi
-
-    BLOCK_USER="$BG_WHITE$TXT_BOLD$TXT_BLACK $INFO_USER $TXT_BOLD_RESET$TXT_WHITE"
-    BLOCK_PATH="$BG_GREEN$TXT_WHITE $INFO_PATH$TXT_GREY"
-    BLOCK_END="$BG_DEFAULT$TXT_DEFAULT$TXT_BOLD_RESET \n$ "
-    PS1="$BLOCK_USER$BLOCK_PATH $BLOCK_GIT$BLOCK_END"
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
 }
 
-# configure PROMPT_COMMAND which is executed each time the prompt is rendered
-export PROMPT_COMMAND=prompt_setup
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
 
 # ==============================================================================
 

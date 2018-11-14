@@ -16,11 +16,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# Allow applications like Sublime find Node even though we are using NVM
-export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-nvm use stable
-
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$PATH:$HOME/.cabal/bin"
 
@@ -33,7 +28,7 @@ export NVM_DIR="/home/marcelo/.nvm"
 
 
 # Remove scroll momentum
-synclient CoastingSpeed=0
+[ -x "$(command -v )" ] && synclient CoastingSpeed=0
 
 # Set key repeat rate to 150ms, up to  100  repetitions per second
 xset r rate 150 100
