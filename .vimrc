@@ -115,12 +115,8 @@ autocmd BufWritePost *.js,*.jsx call prettier#run(1)
 
 " Colour theme 
 syntax on
-colorscheme dim
 set t_Co=256
-
-if (has("termguicolors"))
-    set termguicolors
-endif
+"colorscheme monokai
 
 " Neomake
 " When writing a buffer.
