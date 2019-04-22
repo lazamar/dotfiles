@@ -39,3 +39,10 @@
 # Mac OS config
 !OSX/
 !OSX/*
+
+# Powerline shell
+!.config
+.config/*
+!.config/powerline-shell/
+.config/powerline-shell/*
+!.config/powerline-shell/config.json
