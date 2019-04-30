@@ -5,6 +5,7 @@
     "ssh", 
     "cwd", 
     "git", 
+    "newline",
     "hg", 
     "jobs", 
     "root"
