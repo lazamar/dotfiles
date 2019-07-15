@@ -37,8 +37,8 @@
 !.xmobarrc.hs
 
 # Mac OS config
-!OS/
-!OS/*
+!OS
+!OS/**
 
 # Powerline shell
 !.config
