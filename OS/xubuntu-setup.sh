@@ -68,6 +68,9 @@ git config --global core.editor vim
 # MANUALLY - git config --global user.name "Marcelo Lazaroni"
 # MANUALLY - git config --global user.email my_email@example.com
 
+# Better git log
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%Cgreen(%>(14)%cr) %C(bold blue)<%<(17,trunc)%an>%Creset %s %C(yellow)%d%Creset' --abbrev-commit"
+
 
 # Install NVM
 mkdir ~/.nvm
@@ -83,4 +86,5 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
 sudo apt install docker-ce docker-compose
+
 
