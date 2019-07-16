@@ -60,6 +60,9 @@ sudo apt-get install sublime-text
 # MANUALLY install package control 
 # MANUALLY install PackageSync and load my configuration at ~/.sublime_backup/SublimePackagesBackup.zip
 
+# Install Fira Code font for nice ligatures
+sudo apt install fonts-firacode
+
 # Create SSH key
 # MANuALLY - ssh-keygen -t rsa -b 4096 -C "my_email@example.com"
 
