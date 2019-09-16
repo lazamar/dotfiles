@@ -6,14 +6,24 @@
 !.profile
 !.stylish-haskell.yaml
 
-# Atom Stuff
+!.config
+.config/*
+
+# Nix
+!.nix-defexpr/
+!.nix-defexpr/Marcelo/
+!.nix-defexpr/Marcelo/*
+!.config/nixpkgs
+!.config/nixpkgs/config.nix
+
+# Atom
 !.atom/
 .atom/*
 !.atom/config.cson
 !.atom/keymap.cson
 !.atom/packages.list
 
-# urxvt Terminal
+# Urxvt
 !.urxvt/
 !.urxvt/ext/
 !.urxvt/ext/*
@@ -24,31 +34,24 @@
 # Sublime
 !.sublime_backup
 !.sublime_backup/*
+!.config/sublime-text-3/
+.config/sublime-text-3/*
+!.config/sublime-text-3/Packages
+.config/sublime-text-3/Packages/*
+!.config/sublime-text-3/Packages/env.py
 
 # Xmonad
 !.Xdefaults
-!.xsessionrc
-!.xmobarrc
 !.xmonad
 .xmonad/*
 !.xmonad/xmonad.hs
-
-# Xmobar
-!.xmobarrc.hs
 
 # Mac OS config
 !OS
 !OS/**
 
 # Powerline shell
-!.config
-.config/*
 !.config/powerline-shell/
 .config/powerline-shell/*
 !.config/powerline-shell/config.json
 
-!.config/sublime-text-3/
-.config/sublime-text-3/*
-!.config/sublime-text-3/Packages
-.config/sublime-text-3/Packages/*
-!.config/sublime-text-3/Packages/env.py

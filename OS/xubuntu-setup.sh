@@ -1,11 +1,12 @@
 # MANUALLY - Add dotfiles home folder
 
-# Install git
-sudo apt-get install git
-
 # Install curl
 sudo apt-get install curl
 
+# Install Nix
+sudo apt-get install git
+# install all packages in ~/.nix-defexpr/Marcelo/default.nix
+nix-env -i Marcelo
 
 ### TERMINAL ###
 # Install pip
@@ -19,18 +20,9 @@ wget https://github.com/powerline/fonts/raw/master/Inconsolata/Inconsolata%20for
 sudo mv Inconsolata\ for\ Powerline.otf /usr/share/fonts
 fc-cache -vf
 
-# Install urxvt
-sudo apt-get install rxvt-unicode
-
-
-### VIM ###
-# Install VIM
-sudo apt-get install vim
-
 # Install VimPlug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # Install VIM extensions with VimPlug
 vim +PlugInstall +qall
 
@@ -52,11 +44,6 @@ apt-get install xmonad
  
 
 # Sublime Text
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-sudo apt-get update
-sudo apt-get install sublime-text
 # MANUALLY install package control 
 # MANUALLY install PackageSync and load my configuration at ~/.sublime_backup/SublimePackagesBackup.zip
 
@@ -75,19 +62,9 @@ git config --global core.editor vim
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%Cgreen(%>(14)%cr) %C(bold blue)<%<(17,trunc)%an>%Creset %s %C(yellow)%d%Creset' --abbrev-commit"
 
 
-# Install NVM
-mkdir ~/.nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-# Use a node version
-# MANUALLY - nvm install VERSION
-# MANUALLY - nvm use VERSION
-# MANUALLY - nvm alias default VERSION
-
-# Install Docker
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-sudo apt update
-sudo apt install docker-ce docker-compose
-
-
+# Install Docker (optional)
+# sudo apt install apt-transport-https ca-certificates curl software-properties-common
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+# sudo apt update
+# sudo apt install docker-ce docker-compose
