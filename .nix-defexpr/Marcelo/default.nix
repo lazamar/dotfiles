@@ -7,6 +7,7 @@ in pkgs.buildEnv {
 	paths = with pkgs; [
 		# Desktop environment
 		rxvt_unicode
+        xmonad-with-packages
 
 		# Development environment
 		git
