@@ -32,3 +32,4 @@ export NVM_DIR="/home/marcelo/.nvm"
 
 # Set key repeat rate to 150ms, up to  100  repetitions per second
 xset r rate 150 100
+if [ -e /home/marcelo/.nix-profile/etc/profile.d/nix.sh ]; then . /home/marcelo/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
