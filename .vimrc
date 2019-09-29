@@ -57,7 +57,13 @@ set noundofile
 
 " Always display the status line
 set laststatus=2
-"
+
+" Persistent undo
+set undofile
+set undodir=$HOME/.vim/undo " This has to Exist! mkdir ~/.vim/undo
+set undolevels=1000
+set undoreload=10000
+
 " Disable arrow movement, resize splits instead.
 let g:elite_mode=1
 if get(g:, 'elite_mode')
@@ -142,10 +148,10 @@ let g:airline_theme='onedark'
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_haskell = [ 'brittany', 'stylishhaskell' ]
 " Format on save
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * undojoin | Neoformat
-augroup END
+" augroup fmt
+"   autocmd!
+"   autocmd BufWritePre * undojoin | Neoformat
+" augroup END
 
 " Git gutter
 " Disable from start
