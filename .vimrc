@@ -11,39 +11,27 @@ set encoding=utf8
 " Plugins Installation
 " =======================================
 
-" Start vim-plug in default plugin directory
 call plug#begin('~/.config/nvim/vim-plug')
 
 " Utilities
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'Townk/vim-autoclose'
-Plug 'neomake/neomake'
-
-" Generic language support
-Plug 'Shougo/neocomplete.vim'
-Plug 'scrooloose/syntastic'
-Plug 'ajh17/VimCompletesMe'
 Plug 'scrooloose/nerdcommenter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdtree'
+Plug 'airblade/vim-gitgutter'
 
-" Languages support
-Plug 'elmcast/elm-vim'
-Plug 'heavenshell/vim-prettier'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'sheerun/vim-polyglot'
+" Themes
+Plug 'sickill/vim-monokai'
+Plug 'kaicataldo/material.vim'
 Plug 'joshdick/onedark.vim'
 
-" Themes / Interface
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
-Plug 'sickill/vim-monokai'
-Plug 'jeffkreeftmeijer/vim-dim'
-Plug 'vim-airline/vim-airline'
-
-" Initialise vim-plug
 call plug#end()
-
 
 " =======================================
 " 	CONFIGURATION
@@ -55,10 +43,12 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" User numbers
+" Use numbers
 set number
 " Highlight search matches
-set hlsearch			
+set hlsearch
+" Search incrementally
+set incsearch
 
 " Remove annoying swap files
 set nobackup
@@ -67,31 +57,67 @@ set noundofile
 
 " Always display the status line
 set laststatus=2
-
-" Enable Elite mode, No ARRRROWWS!!!!
-let g:elite_mode=1
+"
 " Disable arrow movement, resize splits instead.
+let g:elite_mode=1
 if get(g:, 'elite_mode')
-	nnoremap <Down>    :resize +2<CR>
-	nnoremap <Up>  :resize -2<CR>
-	nnoremap <Right>  :vertical resize +2<CR>
-	nnoremap <Left> :vertical resize -2<CR>
+    nnoremap <Down>     :resize +2<CR>
+    nnoremap <Up>       :resize -2<CR>
+    nnoremap <Right>    :vertical resize +2<CR>
+    nnoremap <Left>     :vertical resize -2<CR>
 endif
 
-" Enable highlighting of the current line
+" Enable highlighting current line
 set cursorline
+
+" Enable true colors
+if (has('termguicolors'))
+	set termguicolors
+endif
+
+" Set the colour scheme
+syntax on
+set t_Co=256
+let g:material_theme_style = 'palenight'
+colorscheme material
+
+" --- Fast string searches ---
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+" Show tab numbers in tab bar
+if exists("+showtabline")
+     function MyTabLine()
+         let s = ''
+         let t = tabpagenr()
+         let i = 1
+         while i <= tabpagenr('$')
+             let s .= '%' . i . 'T'
+             let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+             let s .= ' ' . i . ' '
+             let i = i + 1
+         endwhile
+         let s .= '%T%#TabLineFill#%='
+         let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+         return s
+     endfunction
+     set stal=2
+     set tabline=%!MyTabLine()
+endif
 
 " =======================================
 " Plugins Configuration
 " =======================================
 
-" Nerdcommenter
-" Make commenting plugin work
-filetype plugin on
+" NerdCommenter
+nmap <C-_>   <Plug>NERDCommenterToggle
+vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
 
 " NerdTree
 " Show hidden files
-let NERDTreeShowHidden=1	  
+let NERDTreeShowHidden=1
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeShowGitStatus = 1
 let g:NERDTreeUpdateOnWrite = 1
@@ -109,78 +135,87 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \  }
 
-
-" Format JS files on save
-autocmd BufWritePost *.js,*.jsx call prettier#run(1)
-
-" Colour theme 
-syntax on
-set t_Co=256
-"colorscheme monokai
-
-" Neomake
-" When writing a buffer.
-call neomake#configure#automake('w')
-" When writing a buffer, and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)
-" When reading a buffer (after 1s), and when writing.
-call neomake#configure#automake('rw', 1000)
-
-" Syntastic  
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" Checkers
-let g:syntastic_javascript_checkers=['eslint']
-
-" ====== File search =======
-" Make sure we don't search in node_modules, git or elm-suff folders
-let $FZF_DEFAULT_COMMAND ='find . -not -path "./node_modules/*" -not -path "./elm-stuff/*" -not -path "./.git/*"'
-
 " Airline
-let g:airline_powerline_fonts = 1 
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1 
+let g:airline_theme='onedark'
+
+" Neoformat
+let g:neoformat_run_all_formatters = 1
+let g:neoformat_enabled_haskell = [ 'brittany', 'stylishhaskell' ]
+" Format on save
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
 
 " Git gutter
 " Disable from start
 let g:gitgutter_enabled = 0
 " Diable all key mappings
 let g:gitgutter_map_keys = 0
+
+" ======== FZF ===========
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+nmap <C-p>  :FZF -i<CR>
+
+nmap <C-c>  :Commands<space><CR>
+"start a project-wide search by pressing \
+nnoremap \  :Ag<space>
+" Search word under the cursor with K
+nnoremap K  :Ag <C-R><C-W><CR>
+
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Make fzf match the colour scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
 " =======================================
 "	KEY MAPPINGS
 " =======================================
 
-" Move lines up and down
-nnoremap <C-j>  	:m .+1<CR>==
-nnoremap <C-k>  	:m .-2<CR>==
-nnoremap <C-Down> 	:m .+1<CR>==
-nnoremap <C-Up> 	:m .-2<CR>==
-inoremap <C-Down> 	<Esc> :m .+1<CR>==gi
-inoremap <C-Up> 	<Esc> :m .-2<CR>==gi
-vnoremap <C-Down> 	:m '>+1<CR>gv=gv
-vnoremap <C-Up> 	:m '<-2<CR>gv=gv
-vnoremap <C-j> 		:m '>+1<CR>gv=gv
-vnoremap <C-k>	 	:m '<-2<CR>gv=gv
+" --- Terminal ---
+"Open terminal with our setup file loaded
+nnoremap <C-t>  :tab   terminal bash --init-file ~/.bash_profile<CR>
+command  Term   :below terminal bash --init-file ~/.bash_profile
 
-" Indent in Visual Model (we need to use 'autocmd VimEnter) so that this
-" doesn't get overriden by plugins)
-autocmd VimEnter * noremap <Tab> >>_
-autocmd VimEnter * nnoremap <S-Tab> <<_
-autocmd	VimEnter * inoremap <S-Tab> <C-D>
-autocmd VimEnter * vnoremap <Tab> >gv
-autocmd VimEnter * vnoremap <S-Tab> <gv
+" Fast buffer switching
+" next buffer
+nnoremap mn :bnext<CR>
+tnoremap mn <C-w>:bnext<CR>
+" previous buffer
+nnoremap mp :bprevious<CR>
+tnoremap mp <C-w>:bprevious<CR>
 
-" Toggle NERDTree
-map <C-n> :NERDTreeToggle<CR>:wincmd p<CR>
-" find currrently open file in nerdtree
-nnoremap <leader>f :NERDTreeFind<CR>
+" Fast tab switching
+function! s:MapTabKey(tabNumber)
+    execute "nnoremap m" . a:tabNumber . " :" a:tabNumber . "tabn<CR>" 
+    execute "tnoremap m" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
+    execute "inoremap m" . a:tabNumber . " <Esc>:" a:tabNumber . "tabn<CR>"
+endfunction
 
-" Toggle comment section
-nmap <C-_>   <Plug>NERDCommenterToggle
-vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
-
+call s:MapTabKey(1)
+call s:MapTabKey(2)
+call s:MapTabKey(3)
+call s:MapTabKey(4)
+call s:MapTabKey(5)
+call s:MapTabKey(6)
+call s:MapTabKey(7)
+call s:MapTabKey(7)
+call s:MapTabKey(8)
+call s:MapTabKey(9)
