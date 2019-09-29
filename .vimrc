@@ -113,6 +113,9 @@ if exists("+showtabline")
      set tabline=%!MyTabLine()
 endif
 
+" Sane space characters when using `set list`
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:·
+
 " =======================================
 " Plugins Configuration
 " =======================================
