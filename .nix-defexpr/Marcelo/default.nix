@@ -7,7 +7,7 @@ in pkgs.buildEnv {
 	paths = with pkgs; [
 		# Desktop environment
 		rxvt_unicode
-        xmonad-with-packages
+        	xmonad-with-packages
 
 		# Development environment
 		git
@@ -16,7 +16,7 @@ in pkgs.buildEnv {
 		# Editors
 		vim
 		vimPlugins.vim-plug
-        sublime3
+        	sublime3
 
 		# Haskell
 		ghc
