@@ -13,6 +13,7 @@ in pkgs.buildEnv {
 		git
 		fzf
 		silver-searcher
+		bat # Syntax highlighting
 
 		# Editors
 		vim
