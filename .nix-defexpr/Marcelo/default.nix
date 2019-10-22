@@ -12,6 +12,7 @@ in pkgs.buildEnv {
 		# Development environment
 		git
 		fzf
+		silver-searcher
 
 		# Editors
 		vim
