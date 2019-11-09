@@ -254,8 +254,8 @@ au User lsp_setup call lsp#register_server({
 " --- Terminal ---
 "Open terminal with our setup file loaded
 
-nnoremap <C-t>  :tab   terminal bash<CR>
-command  Term   :below terminal bash
+nnoremap <C-t>  :tab   terminal bash --rcfile ~/.bash_profile<CR>
+command  Term   :below terminal bash --rcfile ~/.bash_profile
 
 " quit terminal
 tnoremap <C-w>Q <C-w>:bd!<CR>
