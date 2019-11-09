@@ -237,8 +237,14 @@ command! -bang -nargs=* Ag
 command! -bang -nargs=* Files
   \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
 
-command! -bang -nargs=* Tags
-  \ call fzf#vim#tags(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
+command! -bang -nargs=* TT
+  \ call fzf#vim#tags(<q-args>,
+  \ {
+  \     'down': '40%',
+  \     'options': '--with-nth 1
+  \                 --preview-window="80%"
+  \                 --preview "~/.config/nvim/vim-plug/fzf.vim/bin/preview.sh {2}:{3}"'
+  \ })
 
 " --- vim-lsp ---
 au User lsp_setup call lsp#register_server({
