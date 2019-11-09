@@ -22,14 +22,23 @@ Plug 'Townk/vim-autoclose'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+" Language support
+Plug 'sheerun/vim-polyglot'
+Plug 'sbdchd/neoformat'
+
+" GHCIDE required
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 
 " Themes
 Plug 'sickill/vim-monokai'
 Plug 'kaicataldo/material.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'sonph/onehalf', {'rtp': 'vim/'}
 
 call plug#end()
 
@@ -44,16 +53,21 @@ set shiftwidth=4
 set expandtab
 
 " Use numbers
-set number
+" set number
 " Highlight search matches
 set hlsearch
 " Search incrementally
 set incsearch
+" Make search case insensitive
+set ignorecase
+" Make search case sensitive if you type any capitalised letter
+set smartcase
+" Allow erasing past beginning of insert position
+set backspace=indent,eol,start
 
 " Remove annoying swap files
 set nobackup
 set noswapfile
-set noundofile
 
 " Always display the status line
 set laststatus=2
@@ -63,6 +77,9 @@ set undofile
 set undodir=$HOME/.vim/undo " This has to Exist! mkdir ~/.vim/undo
 set undolevels=1000
 set undoreload=10000
+
+" Save a long history of Vim commands
+set history=10000
 
 " Disable arrow movement, resize splits instead.
 let g:elite_mode=1
@@ -84,8 +101,7 @@ endif
 " Set the colour scheme
 syntax on
 set t_Co=256
-let g:material_theme_style = 'palenight'
-colorscheme material
+colorscheme onehalfdark
 
 " --- Fast string searches ---
 if executable('ag')
@@ -115,6 +131,24 @@ endif
 
 " Sane space characters when using `set list`
 set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:·
+
+" Remove spaces on save
+autocmd BufWritePre * %s/\s\+$//e
+
+" Use Haskell syntax highlighting for Mu files
+autocmd BufRead,BufNewFile *.mu set filetype=haskell
+" Use Haskell syntax highlighting for SCL files
+autocmd BufRead,BufNewFile *.scl set filetype=haskell
+
+" Formatters
+command  FormatJSON      :%!jq '.'
+command  FormatHaskell   :Neoformat
+
+" Triger `autoread` when files changes on disk
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" Notification after file change
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " =======================================
 " Plugins Configuration
@@ -147,30 +181,31 @@ let g:NERDTreeIndicatorMapCustom = {
 " Airline
 let g:airline_theme='onedark'
 
-" Neoformat
-let g:neoformat_run_all_formatters = 1
-let g:neoformat_enabled_haskell = [ 'brittany', 'stylishhaskell' ]
-" Format on save
-" augroup fmt
-"   autocmd!
-"   autocmd BufWritePre * undojoin | Neoformat
-" augroup END
-
 " Git gutter
-" Disable from start
-let g:gitgutter_enabled = 0
 " Diable all key mappings
 let g:gitgutter_map_keys = 0
 
+" Neoformat
+let g:neoformat_run_all_formatters = 1
+let g:neoformat_enabled_haskell = [ 'brittany', 'stylishhaskell' ]
+
 " ======== FZF ===========
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
-nmap <C-p>  :FZF -i<CR>
+let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax mu:hs --map-syntax scl:hs'
 
-nmap <C-c>  :Commands<space><CR>
-"start a project-wide search by pressing \
-nnoremap \  :Ag<space>
-" Search word under the cursor with K
-nnoremap K  :Ag <C-R><C-W><CR>
+nmap <C-p>  :Files <CR>
+nmap <C-l>  :Files $L<CR>
+
+" Search command history
+nmap <C-c>  :History:<space><CR>
+" Search word under the cursor project-wide with K
+nnoremap K  :Ag! <C-R><C-W><CR>
+nnoremap T  :Tags <C-R><C-W><CR>
+
+" Search a Haskell or Mu definition of word under the cursor project-wide
+nnoremap mD :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
+" Pre-fill definition search
+nnoremap \  :Ag! (newtype\|type\|data\|class)<space>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -194,26 +229,54 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
+" Ag! will show search in full screen
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'), <bang>0)
+
+" Files! will show search in full screen with preview
+command! -bang -nargs=* Files
+  \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
+
+command! -bang -nargs=* Tags
+  \ call fzf#vim#tags(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
+
+" --- vim-lsp ---
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'ghcide',
+    \ 'cmd': {server_info->['~/.local/bin/ghcide', '--lsp']},
+    \ 'whitelist': ['haskell'],
+    \ })
+
 " =======================================
 "	KEY MAPPINGS
 " =======================================
 
 " --- Terminal ---
 "Open terminal with our setup file loaded
-nnoremap <C-t>  :tab   terminal bash --init-file ~/.bash_profile<CR>
-command  Term   :below terminal bash --init-file ~/.bash_profile
+
+nnoremap <C-t>  :tab   terminal bash<CR>
+command  Term   :below terminal bash
+
+" quit terminal
+tnoremap <C-w>Q <C-w>:bd!<CR>
+noremap  <C-w>Q <C-w>:bd!<CR>
 
 " Fast buffer switching
 " next buffer
-nnoremap mn :bnext<CR>
-tnoremap mn <C-w>:bnext<CR>
+nnoremap n :bnext<CR>
+tnoremap n <C-w>:bnext<CR>
+nnoremap <Space> :Buf<CR>
+
 " previous buffer
-nnoremap mp :bprevious<CR>
-tnoremap mp <C-w>:bprevious<CR>
+nnoremap p :bprevious<CR>
+tnoremap p <C-w>:bprevious<CR>
+" Delete current buffer without losing window
+nnoremap <C-w>d :bp<CR><C-w>:bd #<CR>
+tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
 
 " Fast tab switching
 function! s:MapTabKey(tabNumber)
-    execute "nnoremap m" . a:tabNumber . " :" a:tabNumber . "tabn<CR>" 
+    execute "nnoremap m" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
     execute "tnoremap m" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
     execute "inoremap m" . a:tabNumber . " <Esc>:" a:tabNumber . "tabn<CR>"
 endfunction
