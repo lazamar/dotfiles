@@ -5,6 +5,7 @@
 !.eslintrc.js
 !.profile
 !.stylish-haskell.yaml
+!.tmux.conf
 
 !.config
 .config/*
