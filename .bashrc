@@ -1,4 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
+# This gets run every time bash starts
 # =====================================
 #       Marcelo Lazaroni
 # =====================================
@@ -17,6 +18,19 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+
+# ==================== USE PORWERLINE SHELL ======================
+
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
+
+# =================================================================
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -32,31 +46,19 @@ color_prompt=yes
 
 unset color_prompt force_color_prompt
 
-# ==============================================================================
-# Prompt with GIT info
-# ==============================================================================
-
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
-}
-
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-fi
-
-# ==============================================================================
-
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+alias ls='ls -G'
+# Make folders appear in cyan instead of blue
+export LSCOLORS=gxfxcxdxbxegedabagacad
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+
+# Make fzf use ag and show hidden files
+FZF_DEFAULT_COMMAND="ag --hidden --ignore .git -l -g \"\""
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -68,21 +70,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Configure __git_ps1 to show branch and status
-GIT_PS1_SHOWDIRTYSTATE=true
-GIT_PS1_SHOWSTASHSTATE=true
-GIT_PS1_SHOWUNTRACKEDFILES=true
-GIT_PS1_SHOWUPSTREAM="auto"
-GIT_PS1_HIDE_IF_PWD_IGNORED=true
-GIT_PS1_SHOWCOLORHINTS=true
-
-# Disable Ctrl-S binding so I can use it in Vim
-bind -r '\C-s'
-stty -ixon
-
-export NVM_DIR="/home/marcelo/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
