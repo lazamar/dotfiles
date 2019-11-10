@@ -261,7 +261,7 @@ nnoremap <Leader>r :%s/
 
 " --- Terminal ---
 "Open terminal with our setup file loaded
-nnoremap <C-t>  :tab   terminal bash --rcfile ~/.bash_profile<CR>
+nnoremap <Leader>t  :tab   terminal bash --rcfile ~/.bash_profile<CR>
 command  Term   :below terminal bash --rcfile ~/.bash_profile
 
 " Force quit a window
