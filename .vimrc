@@ -11,7 +11,8 @@ set encoding=utf8
 " Plugins Installation
 " =======================================
 
-call plug#begin('~/.config/nvim/vim-plug')
+let plugins_dir = '~/.config/nvim/vim-plug'
+call plug#begin(expand(plugins_dir))
 
 " Utilities
 Plug 'junegunn/fzf'
@@ -154,10 +155,6 @@ autocmd FileChangedShellPost *
 " Plugins Configuration
 " =======================================
 
-" NerdCommenter
-nmap <C-_>   <Plug>NERDCommenterToggle
-vmap <C-_>   <Plug>NERDCommenterToggle<CR>gv
-
 " NerdTree
 " Show hidden files
 let NERDTreeShowHidden=1
@@ -204,8 +201,6 @@ nnoremap T  :Tags <C-R><C-W><CR>
 
 " Search a Haskell or Mu definition of word under the cursor project-wide
 nnoremap mD :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
-" Pre-fill definition search
-nnoremap \  :Ag! (newtype\|type\|data\|class)<space>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -237,14 +232,17 @@ command! -bang -nargs=* Ag
 command! -bang -nargs=* Files
   \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
 
-command! -bang -nargs=* TT
-  \ call fzf#vim#tags(<q-args>,
-  \ {
-  \     'down': '40%',
-  \     'options': '--with-nth 1
-  \                 --preview-window="80%"
-  \                 --preview "~/.config/nvim/vim-plug/fzf.vim/bin/preview.sh {2}:{3}"'
-  \ })
+" Send file address and line number to fzf.vim's preview script
+let preview_file = plugins_dir . "/fzf.vim/bin/preview.sh"
+let show_preview = 'FILE=;LINE=;F={};for word in $F;do if [ -n "$word" ] & [ "$word" -eq "$word" ] 2>/dev/null;then LINE=$word;break;fi;FILE=$word;done;echo $FILE:$LINE | xargs -I {} ' . preview_file . '  {}'
+
+command! -bang -nargs=* Tags
+  \ call fzf#vim#tags(<q-args>, {
+  \      'down': '40%',
+  \      'options': '--with-nth 1
+  \                  --preview-window="70%"
+  \                  --preview ''' . show_preview . ''''
+  \ }, <bang>0)
 
 " --- vim-lsp ---
 au User lsp_setup call lsp#register_server({
@@ -257,25 +255,27 @@ au User lsp_setup call lsp#register_server({
 "	KEY MAPPINGS
 " =======================================
 
+" Quickly start a string replacement
+nnoremap <Leader>r :%s/
+
 " --- Terminal ---
 "Open terminal with our setup file loaded
-
 nnoremap <C-t>  :tab   terminal bash --rcfile ~/.bash_profile<CR>
 command  Term   :below terminal bash --rcfile ~/.bash_profile
 
-" quit terminal
+" Force quit a window
 tnoremap <C-w>Q <C-w>:bd!<CR>
 noremap  <C-w>Q <C-w>:bd!<CR>
 
 " Fast buffer switching
 " next buffer
-nnoremap n :bnext<CR>
-tnoremap n <C-w>:bnext<CR>
-nnoremap <Space> :Buf<CR>
-
+nnoremap <Leader>] :bnext<CR>
+tnoremap <Leader>] <C-w>:bnext<CR>
 " previous buffer
-nnoremap p :bprevious<CR>
-tnoremap p <C-w>:bprevious<CR>
+nnoremap <Leader>[ :bprevious<CR>
+tnoremap <Leader>[ <C-w>:bprevious<CR>
+" Show all open buffers
+nnoremap <Leader><Space> :Buf<CR>
 " Delete current buffer without losing window
 nnoremap <C-w>d :bp<CR><C-w>:bd #<CR>
 tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
@@ -284,7 +284,6 @@ tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
 function! s:MapTabKey(tabNumber)
     execute "nnoremap m" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
     execute "tnoremap m" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
-    execute "inoremap m" . a:tabNumber . " <Esc>:" a:tabNumber . "tabn<CR>"
 endfunction
 
 call s:MapTabKey(1)
