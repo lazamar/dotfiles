@@ -239,8 +239,9 @@ let show_preview = 'FILE=;LINE=;F={};for word in $F;do if [ -n "$word" ] & [ "$w
 command! -bang -nargs=* Tags
   \ call fzf#vim#tags(<q-args>, {
   \      'down': '40%',
-  \      'options': '--with-nth 1
-  \                  --preview-window="70%"
+  \      'options': '
+  \                  --with-nth 1,2
+  \                  --preview-window="top:70%"
   \                  --preview ''' . show_preview . ''''
   \ }, <bang>0)
 
