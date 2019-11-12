@@ -24,7 +24,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 
 " Language support
@@ -46,6 +46,9 @@ call plug#end()
 " =======================================
 " 	CONFIGURATION
 " =======================================
+
+" Enable mouse scroll
+set mouse=a
 
 " Make tabs work propperly
 filetype plugin indent on
@@ -82,22 +85,12 @@ set undoreload=10000
 " Save a long history of Vim commands
 set history=10000
 
-" Disable arrow movement, resize splits instead.
-let g:elite_mode=1
-if get(g:, 'elite_mode')
-    nnoremap <Down>     :resize +2<CR>
-    nnoremap <Up>       :resize -2<CR>
-    nnoremap <Right>    :vertical resize +2<CR>
-    nnoremap <Left>     :vertical resize -2<CR>
-endif
-
 " Enable highlighting current line
 set cursorline
 
 " Enable true colors
 if (has('termguicolors'))
 	set termguicolors
-    " Make true colors work with tmux
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
@@ -158,8 +151,16 @@ autocmd FileChangedShellPost *
 " Plugins Configuration
 " =======================================
 
+" Disable all silly mappings of NERDCommenter
+let g:NERDCreateDefaultMappings = 0
+autocmd VimEnter * nmap <Leader>/ <plug>NERDCommenterToggle
+autocmd VimEnter * vmap <Leader>/ <plug>NERDCommenterToggle<CR>gv
+
+" Git Signify
+" Set vim updates for 100ms
+set updatetime=100
+
 " NerdTree
-" Show hidden files
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrows = 0
 let g:NERDTreeShowGitStatus = 1
@@ -180,10 +181,7 @@ let g:NERDTreeIndicatorMapCustom = {
 
 " Airline
 let g:airline_theme='onedark'
-
-" Git gutter
-" Diable all key mappings
-let g:gitgutter_map_keys = 0
+let g:airline_powerline_fonts = 1
 
 " Neoformat
 let g:neoformat_run_all_formatters = 1
@@ -194,16 +192,20 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax mu:hs --map-syntax scl:hs'
 
 nmap <C-p>  :Files <CR>
-nmap <C-l>  :Files $L<CR>
+nmap <C-l>  :Files $HOME<CR>
 
 " Search command history
 nmap <C-c>  :History:<space><CR>
+
+" Search available commands
+nmap <Leader>c  :Commands<CR>
+
 " Search word under the cursor project-wide with K
 nnoremap K  :Ag! <C-R><C-W><CR>
 nnoremap T  :Tags <C-R><C-W><CR>
 
 " Search a Haskell or Mu definition of word under the cursor project-wide
-nnoremap mD :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
+nnoremap gD :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -259,8 +261,22 @@ au User lsp_setup call lsp#register_server({
 "	KEY MAPPINGS
 " =======================================
 
+" Both , and \ act as leader
+let mapleader = ','
+map \ <Leader>
+
+" Faster scrolling
+nnoremap <C-d> 6<C-e>
+nnoremap <C-u> 6<C-y>
+
+" Resize windows easily
+map <Leader><Down>     :resize +4<CR>
+map <Leader><Up>       :resize -4<CR>
+map <Leader><Right>    :vertical resize +4<CR>
+map <Leader><Left>     :vertical resize -4<CR>
+
 " Quickly start a string replacement
-nnoremap <Leader>r :%s/
+nnoremap <Leader>r :%s/<C-r><C-W>
 
 " --- Terminal ---
 "Open terminal with our setup file loaded
@@ -268,16 +284,16 @@ nnoremap <Leader>t  :tab   terminal bash --rcfile ~/.bash_profile<CR>
 command  Term   :below terminal bash --rcfile ~/.bash_profile
 
 " Force quit a window
-tnoremap <C-w>Q <C-w>:bd!<CR>
-noremap  <C-w>Q <C-w>:bd!<CR>
+tnoremap <Leader>q <C-w>:bd!<CR>
+noremap  <Leader>q <C-w>:bd!<CR>
 
 " Fast buffer switching
 " next buffer
-nnoremap <Leader>] :bnext<CR>
-tnoremap <Leader>] <C-w>:bnext<CR>
+nnoremap ‘ :bnext<CR>
+tnoremap ‘ <C-w>:bnext<CR>
 " previous buffer
-nnoremap <Leader>[ :bprevious<CR>
-tnoremap <Leader>[ <C-w>:bprevious<CR>
+nnoremap “ :bprevious<CR>
+tnoremap “ <C-w>:bprevious<CR>
 " Show all open buffers
 nnoremap <Leader><Space> :Buf<CR>
 " Delete current buffer without losing window
@@ -286,8 +302,8 @@ tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
 
 " Fast tab switching
 function! s:MapTabKey(tabNumber)
-    execute "nnoremap m" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
-    execute "tnoremap m" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
+    execute "nnoremap <Leader>" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
+    execute "tnoremap <Leader>" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
 endfunction
 
 call s:MapTabKey(1)
@@ -300,3 +316,8 @@ call s:MapTabKey(7)
 call s:MapTabKey(7)
 call s:MapTabKey(8)
 call s:MapTabKey(9)
+
+" Recover selection after indenting
+" we need to use 'autocmd VimEnter so that this doesn't get overriden by plugins
+autocmd VimEnter * vnoremap > >gv
+autocmd VimEnter * vnoremap < <gv
