@@ -280,8 +280,10 @@ nnoremap <Leader>r :%s/<C-r><C-W>
 
 " --- Terminal ---
 "Open terminal with our setup file loaded
-nnoremap <Leader>t  :tab   terminal bash --rcfile ~/.bash_profile<CR>
-command  Term   :below terminal bash --rcfile ~/.bash_profile
+nmap <Leader>T       :tab   terminal bash --rcfile ~/.bash_profile<CR>
+tmap <Leader>T  <C-w>:tab   terminal bash --rcfile ~/.bash_profile<CR>
+nmap <Leader>t       :below terminal bash --rcfile ~/.bash_profile<CR>
+tmap <Leader>t  <C-w>:below terminal bash --rcfile ~/.bash_profile<CR>
 
 " Force quit a window
 tnoremap <Leader>q <C-w>:bd!<CR>
