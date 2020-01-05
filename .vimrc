@@ -141,11 +141,10 @@ autocmd BufRead,BufNewFile *.scl set filetype=haskell
 command  FormatJSON      :%!jq '.'
 command  FormatHaskell   :Neoformat
 
+" Reload files automaticall ywhen they are changed on disk
+set autoread
 " Triger `autoread` when files changes on disk
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
-" Notification after file change
-autocmd FileChangedShellPost *
-  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " =======================================
 " Plugins Configuration
@@ -153,8 +152,8 @@ autocmd FileChangedShellPost *
 
 " Disable all silly mappings of NERDCommenter
 let g:NERDCreateDefaultMappings = 0
-autocmd VimEnter * nmap <Leader>/ <plug>NERDCommenterToggle
-autocmd VimEnter * vmap <Leader>/ <plug>NERDCommenterToggle<CR>gv
+autocmd VimEnter * nmap <C-_> <plug>NERDCommenterToggle
+autocmd VimEnter * vmap <C-_> <plug>NERDCommenterToggle<CR>gv
 
 " Git Signify
 " Set vim updates for 100ms
@@ -238,16 +237,16 @@ command! -bang -nargs=* Files
   \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
 
 " Send file address and line number to fzf.vim's preview script
+" To be used with fast-tags
 let preview_file = plugins_dir . "/fzf.vim/bin/preview.sh"
-let show_preview = 'FILE=;LINE=;F={};for word in $F;do if [ -n "$word" ] & [ "$word" -eq "$word" ] 2>/dev/null;then LINE=$word;break;fi;FILE=$word;done;echo $FILE:$LINE | xargs -I {} ' . preview_file . '  {}'
 
 command! -bang -nargs=* Tags
   \ call fzf#vim#tags(<q-args>, {
   \      'down': '40%',
   \      'options': '
-  \                  --with-nth 1,2
-  \                  --preview-window="top:70%"
-  \                  --preview ''' . show_preview . ''''
+  \         --with-nth 1,2
+  \         --preview-window="top:70%"
+  \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
   \ }, <bang>0)
 
 " --- vim-lsp ---
@@ -277,13 +276,14 @@ map <Leader><Left>     :vertical resize -4<CR>
 
 " Quickly start a string replacement
 nnoremap <Leader>r :%s/<C-r><C-W>
+vnoremap <Leader>r "ay::%s/<C-r>a/
 
 " --- Terminal ---
 "Open terminal with our setup file loaded
-nmap <Leader>T       :tab   terminal bash --rcfile ~/.bash_profile<CR>
-tmap <Leader>T  <C-w>:tab   terminal bash --rcfile ~/.bash_profile<CR>
-nmap <Leader>t       :below terminal bash --rcfile ~/.bash_profile<CR>
-tmap <Leader>t  <C-w>:below terminal bash --rcfile ~/.bash_profile<CR>
+nmap <Leader>T       :tab   terminal bash --rcfile ~/.bashrc<CR>
+tmap <Leader>T  <C-w>:tab   terminal bash --rcfile ~/.bashrc<CR>
+nmap <Leader>t       :below terminal bash --rcfile ~/.bashrc<CR>
+tmap <Leader>t  <C-w>:below terminal bash --rcfile ~/.bashrc<CR>
 
 " Force quit a window
 tnoremap <Leader>q <C-w>:bd!<CR>
@@ -291,15 +291,17 @@ noremap  <Leader>q <C-w>:bd!<CR>
 
 " Fast buffer switching
 " next buffer
-nnoremap ‘ :bnext<CR>
-tnoremap ‘ <C-w>:bnext<CR>
+nnoremap <Leader>n      :bnext<CR>
+tnoremap <Leader>n <C-w>:bnext<CR>
 " previous buffer
-nnoremap “ :bprevious<CR>
-tnoremap “ <C-w>:bprevious<CR>
+nnoremap <Leader>p      :bprevious<CR>
+tnoremap <Leader>p <C-w>:bprevious<CR>
 " Show all open buffers
-nnoremap <Leader><Space> :Buf<CR>
+nnoremap      <Leader><Space>      :Buf<CR>
+tnoremap <C-w><Leader><Space> <C-W>:Buf<CR>
+
 " Delete current buffer without losing window
-nnoremap <C-w>d :bp<CR><C-w>:bd #<CR>
+nnoremap <C-w>d      :bp<CR><C-w>:bd #<CR>
 tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
 
 " Fast tab switching
