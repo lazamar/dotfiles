@@ -297,29 +297,29 @@ if has("nvim")
 endif
 
 "Open terminal with our setup file loaded
-nmap <Leader>T       :vert  terminal <CR>
-tmap <Leader>T  <C-w>:vert  terminal <CR>
-nmap <Leader>t       :below terminal <CR>
-tmap <Leader>t  <C-w>:below terminal <CR>
+nmap <Leader>T            :vsplit \| execute "terminal" \| startinsert <CR>
+tmap <Leader>T  <C-\><C-n>:vsplit \| execute "terminal" \| startinsert <CR>
+nmap <Leader>t            :split  \| execute "terminal" \| startinsert <CR>
+tmap <Leader>t  <C-\><C-n>:split  \| execute "terminal" \| startinsert <CR>
 
 " Force quit a window
-tnoremap <Leader>q <C-w>:bd!<CR>
-noremap  <Leader>q <C-w>:bd!<CR>
+tnoremap <Leader>q <C-\><C-n>:bd!<CR>
+noremap  <Leader>q      <C-w>:bd!<CR>
+
 
 " Fast buffer switching
 " next buffer
-nnoremap <Leader>n      :bnext<CR>
-tnoremap <Leader>n <C-w>:bnext<CR>
+nnoremap <Leader>n           :bnext<CR>
+tnoremap <Leader>n <C-\><C-n>:bnext<CR>
 " previous buffer
-nnoremap <Leader>p      :bprevious<CR>
-tnoremap <Leader>p <C-w>:bprevious<CR>
+nnoremap <Leader>p           :bprevious<CR>
+tnoremap <Leader>p <C-\><C-n>:bprevious<CR>
 " Show all open buffers
-nnoremap      <Leader><Space>      :Buf<CR>
-tnoremap <C-w><Leader><Space> <C-W>:Buf<CR>
+nnoremap <Leader><Space>          :Buf<CR>
+tnoremap <Leader><Space> <C-\><C-n>:Buf<CR>
 
 " Delete current buffer without losing window
 nnoremap <C-w>d      :bp<CR><C-w>:bd #<CR>
-tnoremap <C-w>d <C-w>:bp!<CR><C-w>:bd #<CR>
 
 " Fast tab switching
 function! s:MapTabKey(tabNumber)
