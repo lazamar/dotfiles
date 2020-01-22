@@ -7,6 +7,11 @@ syntax on
 set nowrap
 set encoding=utf8
 
+" Both , and \ act as leader
+let mapleader = ','
+map \ <Leader>
+
+
 " =======================================
 " Plugins Installation
 " =======================================
@@ -19,7 +24,6 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'Townk/vim-autoclose'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -32,8 +36,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'sbdchd/neoformat'
 
 " GHCIDE required
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Themes
 Plug 'sickill/vim-monokai'
@@ -68,7 +71,8 @@ set ignorecase
 set smartcase
 " Allow erasing past beginning of insert position
 set backspace=indent,eol,start
-
+" Enable buffer gutter all the time
+set signcolumn=yes
 " Remove annoying swap files
 set nobackup
 set noswapfile
@@ -150,6 +154,11 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 " Plugins Configuration
 " =======================================
 
+"coc.nvim
+" Make tab navigate through options
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " Disable all silly mappings of NERDCommenter
 let g:NERDCreateDefaultMappings = 0
 autocmd VimEnter * nmap <C-_> <plug>NERDCommenterToggle
@@ -204,7 +213,9 @@ nnoremap K  :Ag! <C-R><C-W><CR>
 nnoremap T  :Tags <C-R><C-W><CR>
 
 " Search a Haskell or Mu definition of word under the cursor project-wide
-nnoremap gD :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
+nnoremap <Leader>D :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
+" Search type definition, function definition with and without signatures
+nnoremap <Leader>d /\(\(newtype\\|type\\|data\\|class\)<space><C-R><C-W>\>\\|\<<C-R><C-W> ::\\|\n\s\+\(let\)\?\s\+<C-R><C-W> .*=\)<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -249,20 +260,21 @@ command! -bang -nargs=* Tags
   \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
   \ }, <bang>0)
 
-" --- vim-lsp ---
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'ghcide',
-    \ 'cmd': {server_info->['~/.local/bin/ghcide', '--lsp']},
-    \ 'whitelist': ['haskell'],
-    \ })
+let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rls'],
+    \ 'haskell': ['ghcide', '--lsp'],
+    \ }
 
 " =======================================
 "	KEY MAPPINGS
 " =======================================
 
-" Both , and \ act as leader
-let mapleader = ','
-map \ <Leader>
+" Use arrows to resize screen
+nnoremap <Down>     :resize +2<CR>
+nnoremap <Up>       :resize -2<CR>
+nnoremap <Right>    :vertical resize +2<CR>
+nnoremap <Left>     :vertical resize -2<CR>
 
 " Faster scrolling
 nnoremap <C-d> 6<C-e>
@@ -279,11 +291,16 @@ nnoremap <Leader>r :%s/<C-r><C-W>
 vnoremap <Leader>r "ay::%s/<C-r>a/
 
 " --- Terminal ---
+if has("nvim")
+    " Make C-W take terminal to normal mode
+    tmap <C-w> <C-\><C-n><C-w>
+endif
+
 "Open terminal with our setup file loaded
-nmap <Leader>T       :tab   terminal bash --rcfile ~/.bashrc<CR>
-tmap <Leader>T  <C-w>:tab   terminal bash --rcfile ~/.bashrc<CR>
-nmap <Leader>t       :below terminal bash --rcfile ~/.bashrc<CR>
-tmap <Leader>t  <C-w>:below terminal bash --rcfile ~/.bashrc<CR>
+nmap <Leader>T       :vert  terminal <CR>
+tmap <Leader>T  <C-w>:vert  terminal <CR>
+nmap <Leader>t       :below terminal <CR>
+tmap <Leader>t  <C-w>:below terminal <CR>
 
 " Force quit a window
 tnoremap <Leader>q <C-w>:bd!<CR>
