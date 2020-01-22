@@ -70,3 +70,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Always use neovim and source .vimrc file
+alias vim='nvim -u ~/.vimrc'
