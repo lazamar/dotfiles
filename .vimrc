@@ -25,8 +25,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
@@ -187,9 +186,8 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \  }
 
-" Airline
-let g:airline_theme='onedark'
-let g:airline_powerline_fonts = 1
+" Lightline
+let g:lightline = { 'colorscheme': 'candid' }
 
 " Neoformat
 let g:neoformat_run_all_formatters = 1
