@@ -43,6 +43,7 @@ Plug 'sickill/vim-monokai'
 Plug 'kaicataldo/material.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}
+Plug 'lazamar/candid.vim'
 
 call plug#end()
 
@@ -102,7 +103,7 @@ endif
 " Set the colour scheme
 syntax on
 set t_Co=256
-colorscheme onehalfdark
+colorscheme candid
 
 " --- Fast string searches ---
 if executable('ag')
@@ -210,7 +211,10 @@ nmap <Leader>c  :Commands<CR>
 
 " Search word under the cursor project-wide with K
 nnoremap K  :Ag! <C-R><C-W><CR>
-nnoremap T  :Tags <C-R><C-W><CR>
+" Search all tags
+nnoremap T  :Tags<CR>
+" Search tag under the cursor
+nnoremap gt :Tags <C-R><C-W><CR>
 
 " Search a Haskell or Mu definition of word under the cursor project-wide
 nnoremap <Leader>D :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
@@ -324,7 +328,7 @@ nnoremap <C-w>d      :bp<CR><C-w>:bd #<CR>
 " Fast tab switching
 function! s:MapTabKey(tabNumber)
     execute "nnoremap <Leader>" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
-    execute "tnoremap <Leader>" . a:tabNumber . " <C-W>:" a:tabNumber . "tabn<CR>"
+    execute "tnoremap <Leader>" . a:tabNumber . " <C-\\><C-n>:" a:tabNumber . "tabn<CR>"
 endfunction
 
 call s:MapTabKey(1)
