@@ -29,6 +29,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
+Plug 'Twinside/vim-hoogle'
 
 " Language support
 Plug 'sheerun/vim-polyglot'
@@ -157,6 +158,18 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 " Make tab navigate through options
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use gd to go to definition
+nmap <silent> gd <Plug>(coc-definition)
+
+" Use H to show documentation in preview window
+nnoremap <silent> H :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 " Disable all silly mappings of NERDCommenter
 let g:NERDCreateDefaultMappings = 0
@@ -191,7 +204,10 @@ let g:lightline = { 'colorscheme': 'candid' }
 
 " Neoformat
 let g:neoformat_run_all_formatters = 1
-let g:neoformat_enabled_haskell = [ 'brittany', 'stylishhaskell' ]
+let g:neoformat_enabled_haskell = [ 'brittany' ]
+
+" vim-hoogle
+let g:hoogle_search_bin = 'stack hoogle --'
 
 " ======== FZF ===========
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
