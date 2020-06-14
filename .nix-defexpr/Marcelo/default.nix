@@ -13,6 +13,7 @@ in pkgs.buildEnv {
         mosh              # Better ssh
         vim               # Text editor
         neovim            # Text editor
+        nodejs            # Needed for neovim completion
         stack
         haskellPackages.ghcid
         haskellPackages.hlint
