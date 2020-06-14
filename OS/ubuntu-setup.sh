@@ -27,24 +27,13 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 vim +PlugInstall +qall
 
 ### UI ###
-# Install xmonad
-apt-get install xmonad
-
 # Adjust DPI
 # Open xfce4-settings-editor and under xsettings change DPI
 # For retina display with low resolution use 120dpi
 # For retina display with high resolution use 180 dpi
 
-
-# Google Chrome
-# Manually download it from chrome's website and install it
-# Make it start quickly:
-#    Edit the .desktop files to use no keyring
-#    Exec=google-chrome-stable --password-store=basic %U
- 
-
 # Sublime Text
-# MANUALLY install package control 
+# MANUALLY install package control
 # MANUALLY install PackageSync and load my configuration at ~/.sublime_backup/SublimePackagesBackup.zip
 
 # Install Fira Code font for nice ligatures
@@ -61,10 +50,3 @@ git config --global core.editor vim
 # Better git log
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%Cgreen(%>(14)%cr) %C(bold blue)<%<(17,trunc)%an>%Creset %s %C(yellow)%d%Creset' --abbrev-commit"
 
-
-# Install Docker (optional)
-# sudo apt install apt-transport-https ca-certificates curl software-properties-common
-# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-# sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-# sudo apt update
-# sudo apt install docker-ce docker-compose
