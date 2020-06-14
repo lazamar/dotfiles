@@ -10,10 +10,9 @@ in pkgs.buildEnv {
         silver-searcher   # Fast string search
         bat               # Syntax highlighting
         powerline-rs      # Prompt with git info
-
-        vim
-        neovim
-
+        mosh              # Better ssh
+        vim               # Text editor
+        neovim            # Text editor
         stack
         haskellPackages.ghcid
         haskellPackages.hlint
