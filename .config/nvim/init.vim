@@ -44,6 +44,7 @@ Plug 'kaicataldo/material.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}
 Plug 'lazamar/candid.vim'
+Plug 'cormacrelf/vim-colors-github'
 
 call plug#end()
 
