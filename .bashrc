@@ -21,13 +21,11 @@ HISTFILESIZE=2000
 
 # ==================== USE PORWERLINE SHELL ======================
 
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
-}
+prompt() {
+        PS1="$(powerline-rs --newline --shell bash $?)"
+    }
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-fi
+PROMPT_COMMAND=prompt
 
 # =================================================================
 
@@ -64,6 +62,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Always use neovim and source .vimrc file
-alias vim='nvim -u ~/.vimrc'

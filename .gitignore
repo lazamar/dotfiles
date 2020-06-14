@@ -17,20 +17,12 @@
 !.config/nixpkgs
 !.config/nixpkgs/config.nix
 
-# Atom
-!.atom/
-.atom/*
-!.atom/config.cson
-!.atom/keymap.cson
-!.atom/packages.list
 
-# Urxvt
-!.urxvt/
-!.urxvt/ext/
-!.urxvt/ext/*
-
-# Vim
-!.vimrc
+# Nix
+!.config/nvim
+!.config/nvim/autoload
+!.config/nvim/autoload/plug.vim
+!.config/nvim/init.vim
 
 # Sublime
 !.sublime_backup
@@ -41,18 +33,7 @@
 .config/sublime-text-3/Packages/*
 !.config/sublime-text-3/Packages/env.py
 
-# Xmonad
-!.Xdefaults
-!.xmonad
-.xmonad/*
-!.xmonad/xmonad.hs
-
 # Mac OS config
 !OS
 !OS/**
-
-# Powerline shell
-!.config/powerline-shell/
-.config/powerline-shell/*
-!.config/powerline-shell/config.json
 
