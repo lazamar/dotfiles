@@ -15,6 +15,7 @@ in pkgs.buildEnv {
         neovim            # Text editor
         nodejs            # Needed for neovim completion
         stack
+        haskellPackages.fast-tags
         haskellPackages.ghcid
         haskellPackages.hlint
     ];
