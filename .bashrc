@@ -22,7 +22,7 @@ HISTFILESIZE=2000
 # ==================== USE PORWERLINE SHELL ======================
 
 prompt() {
-        PS1="$(powerline-rs --newline --modules host,user,cwd,perms,git,gitstage,nix-shell,root --shell bash $?)"
+        PS1="$(powerline-rs --modules host,user,linebreak,cwd,perms,git,gitstage,nix-shell,linebreak,root --shell bash $?)"
     }
 
 PROMPT_COMMAND=prompt
