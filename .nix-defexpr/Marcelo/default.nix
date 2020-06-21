@@ -30,15 +30,17 @@ in pkgs.buildEnv {
         fzf               # Fast file search
         silver-searcher   # Fast string search
         bat               # Syntax highlighting
-        my-powerline-rs   # Prompt with git info
         vim               # Text editor
         neovim            # Text editor
         nodejs            # Needed for neovim completion
-        mosh-truecolor    # Better SSH
 
         stack
         haskellPackages.fast-tags
         haskellPackages.ghcid
         haskellPackages.hlint
+
+        # Modified packages
+        mosh-truecolor    # Better SSH
+        my-powerline-rs   # Prompt with git info
     ];
 }
