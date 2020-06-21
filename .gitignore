@@ -13,7 +13,7 @@
 # Nix
 !.nix-defexpr/
 !.nix-defexpr/Marcelo/
-!.nix-defexpr/Marcelo/*
+!.nix-defexpr/marcelo.nix
 !.config/nixpkgs
 !.config/nixpkgs/config.nix
 
