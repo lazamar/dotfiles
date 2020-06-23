@@ -42,6 +42,7 @@ in pkgs.buildEnv {
         neovim            # Text editor
         nodejs            # Needed for neovim completion
         cachix            # Nix caches
+        tmux
 
         stack
         haskellPackages.fast-tags
