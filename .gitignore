@@ -23,6 +23,8 @@
 !.config/nvim/autoload
 !.config/nvim/autoload/plug.vim
 !.config/nvim/init.vim
+!.config/nvim/spell
+!.config/nvim/spell/*
 
 # Sublime
 !.sublime_backup

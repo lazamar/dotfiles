@@ -35,6 +35,7 @@ Plug 'Twinside/vim-hoogle'
 Plug 'sheerun/vim-polyglot'
 Plug 'sbdchd/neoformat'
 
+
 " GHCIDE required
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -78,6 +79,8 @@ set signcolumn=yes
 " Remove annoying swap files
 set nobackup
 set noswapfile
+set spelllang=en_gb
+set spellfile=~/.config/nvim/spell/en.utf-8.add
 
 " Always display the status line
 set laststatus=2
