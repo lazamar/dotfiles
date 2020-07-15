@@ -41,7 +41,7 @@ in pkgs.buildEnv {
         vim               # Text editor
         neovim            # Text editor
         nodejs            # Needed for neovim completion
-        cachix            # Nix caches
+        # cachix            # Nix caches # Cachix should be installed before this derivation
         tmux
 
         stack
