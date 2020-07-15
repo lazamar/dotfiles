@@ -6,6 +6,7 @@
 !.profile
 !.stylish-haskell.yaml
 !.tmux.conf
+!linux-setup.sh
 
 !.config
 .config/*
