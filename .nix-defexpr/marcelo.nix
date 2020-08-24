@@ -44,7 +44,6 @@ in pkgs.buildEnv {
         # cachix            # Nix caches # Cachix should be installed before this derivation
         tmux
 
-        stack
         haskellPackages.fast-tags
         haskellPackages.ghcid
         haskellPackages.hlint
