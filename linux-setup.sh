@@ -28,5 +28,8 @@ sudo -i -u marcelo bash << EOF
 
         # Vim extensions
         nvim -c PlugInstall          # Needs to be made non-interactive q
+        
+        # Install haskell stack
+        curl -sSL https://get.haskellstack.org/ | sh
 EOF
 
