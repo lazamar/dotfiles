@@ -269,8 +269,11 @@ command! -bang -nargs=* Files
   \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
 
 " Send file address and line number to fzf.vim's preview script
-" To be used with fast-tags
-let preview_file = plugins_dir . "/fzf.vim/bin/preview.sh"
+" Works with the following commands
+" - For Haskell use fast-tags             : find . -name "*.hs" | fast-tags -
+" - For anything else use universal-ctags : ctags -R -n
+" fzf's preview file is broken. Use the custom version instead
+let preview_file = plugins_dir . "/../fzf-preview.sh"
 
 command! -bang -nargs=* Tags
   \ call fzf#vim#tags(<q-args>, {
