@@ -204,7 +204,15 @@ let g:NERDTreeIndicatorMapCustom = {
     \  }
 
 " Lightline
-let g:lightline = { 'colorscheme': 'candid' }
+let g:lightline = {
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'relativepath', 'modified' ] ]
+    \ },
+    \ 'inactive' : {
+    \   'left': [ [ 'relativepath' ] ]
+    \ },
+    \ 'colorscheme': 'candid'
+    \ }
 
 " Neoformat
 let g:neoformat_run_all_formatters = 1
