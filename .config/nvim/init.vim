@@ -294,6 +294,16 @@ let g:LanguageClient_serverCommands = {
 "	KEY MAPPINGS
 " =======================================
 
+" Make smartcase not apply in * and # searches
+nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
+nnoremap # ?\<<C-R>=expand('<cword>')<CR>\><CR>
+
+" Copy file path
+" Relative
+nnoremap yp         :let @" = expand("%")<CR>
+" Absolute
+nnoremap yP         :let @" = expand("%:p")<CR>
+
 " Use arrows to resize screen
 nnoremap <Down>     :resize +2<CR>
 nnoremap <Up>       :resize -2<CR>
