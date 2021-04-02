@@ -109,7 +109,21 @@ endif
 " Set the colour scheme
 syntax on
 set t_Co=256
-colorscheme candid
+
+" Set the colour scheme
+syntax on
+set t_Co=256
+function! g:LightTheme()
+    let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax hsc:hs --map-syntax scl:hs --theme OneHalfLight'
+    colorscheme onehalflight
+endfunction
+
+function! g:DarkTheme()
+    let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax hsc:hs --map-syntax scl:hs'
+    colorscheme candid-dark
+endfunction
+
+call g:DarkTheme()
 
 " --- Fast string searches ---
 if executable('ag')
