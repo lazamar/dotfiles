@@ -338,6 +338,9 @@ map <Leader><Left>     :vertical resize -4<CR>
 nnoremap <Leader>r :%s/<C-r><C-W>
 vnoremap <Leader>r "ay::%s/<C-r>a/
 
+" Quickly start a string search
+nmap <Leader>f :Rg<Space>
+
 " --- Terminal ---
 if has("nvim")
     " Make C-W take terminal to normal mode
