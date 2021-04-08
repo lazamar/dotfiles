@@ -85,6 +85,9 @@ set spellfile=~/.config/nvim/spell/en.utf-8.add
 " Always display the status line
 set laststatus=2
 
+" Allow going beyond line end with cursor
+set virtualedit=all
+
 " Persistent undo
 set undofile
 set undodir=$HOME/.vim/undo " This has to Exist! mkdir ~/.vim/undo
