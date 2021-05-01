@@ -75,7 +75,7 @@ set smartcase
 " Allow erasing past beginning of insert position
 set backspace=indent,eol,start
 " Enable buffer gutter all the time
-set signcolumn=yes
+set signcolumn=auto
 " Remove annoying swap files
 set nobackup
 set noswapfile
