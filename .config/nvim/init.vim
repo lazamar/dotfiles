@@ -25,7 +25,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdcommenter'
-Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
@@ -157,6 +156,18 @@ set autoread
 " Triger `autoread` when files changes on disk
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
 
+" Custom status line
+set statusline=
+set statusline+=%#LeftSection#
+set statusline+=\ %f
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#RightSection#
+set statusline+=\ %l:%c
+set statusline+=\ %p%%
+set statusline+=\ %y
+set statusline+=\ |
+
 " =======================================
 " Plugins Configuration
 " =======================================
@@ -205,17 +216,6 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Clean"     : "✔︎",
     \ "Unknown"   : "?"
     \  }
-
-" Lightline
-let g:lightline = {
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'relativepath', 'modified' ] ]
-    \ },
-    \ 'inactive' : {
-    \   'left': [ [ 'relativepath' ] ]
-    \ },
-    \ 'colorscheme': 'candid'
-    \ }
 
 " Neoformat
 let g:neoformat_run_all_formatters = 1
