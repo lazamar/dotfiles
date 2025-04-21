@@ -1,6 +1,10 @@
+
 " ===============================================================================
 "   Marcelo Lazaroni Vim Config
 " ===============================================================================
+
+set notermguicolors
+colorscheme vim
 
 set nocompatible
 syntax on
@@ -11,6 +15,106 @@ set encoding=utf8
 let mapleader = ','
 map \ <Leader>
 
+" =======================================
+" KEY MAPPINGS
+" =======================================
+
+" Make pasting over a selection not override the copied register
+vnoremap p "_dP
+
+" Copy into the OS clipboard
+vnoremap Y "+y
+nnoremap Y "+y
+
+" Make smartcase not apply in * and # searches
+nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
+nnoremap # ?\<<C-R>=expand('<cword>')<CR>\><CR>
+nnoremap // :nohlsearch<CR>
+
+" Copy file path
+" Relative
+nnoremap yp         :let @" = expand("%")<CR>
+" Absolute
+nnoremap yP         :let @" = expand("%:p")<CR>
+
+" Use arrows to resize screen
+nnoremap <Down>     :resize +2<CR>
+nnoremap <Up>       :resize -2<CR>
+nnoremap <Right>    :vertical resize +2<CR>
+nnoremap <Left>     :vertical resize -2<CR>
+
+" Faster scrolling
+nnoremap <C-d> 6<C-e>
+nnoremap <C-u> 6<C-y>
+
+" Quickly start a string replacement
+nnoremap <Leader>r :%s/<C-r><C-W>
+vnoremap <Leader>r "ay::%s/<C-r>a/
+
+" Quickly start a string search
+nmap <Leader>f :Rg<Space>
+
+" Make C-W take terminal to normal mode
+tmap <C-w> <C-\><C-n><C-w>
+
+" Go into normal mode with two escapes
+tnoremap <Leader><Leader> <C-\><C-N>
+
+"Open terminal with our setup file loaded
+nmap <Leader>T            :vsplit \| execute "terminal" \| startinsert <CR>
+tmap <Leader>T  <C-\><C-n>:vsplit \| execute "terminal" \| startinsert <CR>
+nmap <Leader>t            :split  \| execute "terminal" \| startinsert <CR>
+tmap <Leader>t  <C-\><C-n>:split  \| execute "terminal" \| startinsert <CR>
+
+" Force quit a window
+tnoremap <Leader>q <C-\><C-n>:bd!<CR>
+nnoremap <Leader>q :bd!<CR>
+
+" Quickly move through quickfix list
+nmap <C-j> :cnext<CR>
+nmap <C-k> :cprev<CR>
+
+" Open a quickfix window with the selected content
+vnoremap <Leader>q  y:cexpr @"<CR>:copen<CR>
+
+" Fast buffer switching
+" next buffer
+nnoremap <Leader>n           :bnext<CR>
+tnoremap <Leader>n <C-\><C-n>:bnext<CR>
+" previous buffer
+nnoremap <Leader>p           :bprevious<CR>
+tnoremap <Leader>p <C-\><C-n>:bprevious<CR>
+" Show all open buffers
+nnoremap <Leader><Space>          :Buf<CR>
+
+" Delete current buffer without losing window
+nnoremap <C-w>d      :bp<CR><C-w>:bd #<CR>
+
+" Create new tabs
+nmap tt :tabnew<CR>
+
+" Fast tab switching
+" Use <Leader><NUMBER> to select tab
+function! s:MapTabKey(tabNumber)
+    execute "nnoremap <Leader>" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
+    execute "tnoremap <Leader>" . a:tabNumber . " <C-\\><C-n>:" a:tabNumber . "tabn<CR>"
+endfunction
+
+call s:MapTabKey(1)
+call s:MapTabKey(2)
+call s:MapTabKey(3)
+call s:MapTabKey(4)
+call s:MapTabKey(5)
+call s:MapTabKey(6)
+call s:MapTabKey(7)
+call s:MapTabKey(7)
+call s:MapTabKey(8)
+call s:MapTabKey(9)
+
+" Recover selection after indenting
+" we need to use 'autocmd VimEnter so that this doesn't get overriden by plugins
+autocmd VimEnter * vnoremap > >gv
+autocmd VimEnter * vnoremap < <gv
 
 " =======================================
 " Plugins Installation
@@ -20,45 +124,291 @@ let plugins_dir = '~/.config/nvim/vim-plug'
 call plug#begin(expand(plugins_dir))
 
 " Utilities
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-fugitive'
-Plug 'Twinside/vim-hoogle'
+Plug 'http://github.com/tpope/vim-surround'
+Plug 'http://github.com/tpope/vim-repeat'
+Plug 'http://github.com/scrooloose/nerdcommenter'
+Plug 'http://github.com/scrooloose/nerdtree'
+Plug 'http://github.com/mhinz/vim-signify'
+
+" Fuzzy finder
+Plug 'http://github.com/junegunn/fzf'
+Plug 'http://github.com/junegunn/fzf.vim'
 
 " Language support
-Plug 'sheerun/vim-polyglot'
-Plug 'sbdchd/neoformat'
+" Plug 'http://github.com/sheerun/vim-polyglot'
+" Tree-sitter is not very good yet.
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': 'master' }
+" View tags on the sidebar
+Plug 'preservim/tagbar'
+Plug 'rust-lang/rust.vim'
+Plug 'http://github.com/pappasam/jedi-language-server', { 'branch': 'main' }
+Plug 'http://github.com/mfussenegger/nvim-lint'
 
-
-" GHCIDE required
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Themes
-Plug 'sickill/vim-monokai'
-Plug 'kaicataldo/material.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
-Plug 'lazamar/candid.vim'
-Plug 'cormacrelf/vim-colors-github'
+" LSP
+" Enables Neovim's native LSP
+Plug 'neovim/nvim-lspconfig'
+" Autocompletion with Neovim's native LSP
+Plug 'hrsh7th/nvim-compe'
 
 call plug#end()
 
 " =======================================
-" 	CONFIGURATION
+" Plugins Configuration
 " =======================================
+
+" ======== compe ===========
+" Enable compe's completion
+set completeopt=menuone,noselect
+" compe's settings
+lua << EOF
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+  };
+}
+EOF
+
+" ======== Neovim's LSP ===========
+lua << EOF
+-- setup language servers
+local lspconfig = require('lspconfig')
+
+-- Enable errors showing in-line
+vim.diagnostic.config({ virtual_text = true })
+
+lspconfig.rust_analyzer.setup {
+  -- Server-specific settings. See `:help lspconfig-setup`
+  settings = {
+    ['rust-analyzer'] = {},
+  },
+}
+
+-- haskell language server
+lspconfig.hls.setup {}
+
+-- Elm language server
+lspconfig.elmls.setup {
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format()
+      end
+    })
+  end,
+}
+
+-- TypeScript language server
+lspconfig.ts_ls.setup {}
+
+-- Python language server
+lspconfig.jedi_language_server.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	lsp_flags = lsp_flags,
+})
+lint = require('lint')
+lint.linters_by_ft = {
+  python = {'mypy', 'ruff'},
+}
+lint.linters.mypy.cmd = 'pipenv'
+lint.linters.mypy.args = {
+  'run',
+  'mypy',
+  '--show-column-numbers',
+  '--show-error-end',
+  '--hide-error-context',
+  '--no-color-output',
+  '--no-error-summary',
+  '--no-pretty',
+}
+lint.linters.ruff.cmd = 'pipenv'
+ruff_old_args = lint.linters.ruff.args
+lint.linters.ruff.args = { 'run', 'ruff', unpack(ruff_old_args) }
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    lint.try_lint()
+  end,
+})
+
+-- Use internal formatting for bindings like gq.
+ vim.api.nvim_create_autocmd('LspAttach', {
+   callback = function(args)
+     vim.bo[args.buf].formatexpr = nil
+   end,
+ })
+EOF
+
+" ======== Treesitter ===========
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the listed parsers MUST always be installed)
+  ensure_installed = {
+    "javascript",
+    "lua",
+    "markdown",
+    "python",
+    "vimdoc",
+    "yaml",
+    "c",
+    "haskell",
+    "json",
+    "markdown_inline",
+    "query",
+    "rust",
+    "typescript",
+    "vim",
+  },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  -- List of parsers to ignore installing (or "all")
+  ignore_install = { },
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { },
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 1000 * 1024 -- 1MB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+" ======== rust-lang  ===========
+" Run rustfmt on save
+let g:rustfmt_autosave = 1
+
+" ======== NERDCommenter ===========
+" Disable all silly mappings of NERDCommenter
+let g:NERDCreateDefaultMappings = 0
+autocmd VimEnter * nmap <C-_> <plug>NERDCommenterToggle
+autocmd VimEnter * vmap <C-_> <plug>NERDCommenterToggle<CR>gv
+
+" ======== vim-signify ===========
+" Set vim updates for 1000ms
+set updatetime=1000
+
+" ======== NerdTree ===========
+let NERDTreeShowHidden=1
+
+" Toggle side bar
+nmap <Leader>` :NERDTreeToggle<CR>
+" Reveal in side bar
+nmap <Leader>F :NERDTreeFind<CR>
+
+" ======== FZF ===========
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+
+" Key bindings in search window
+" Use <C-a><C-q> to get results into a quickfix window.
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Search project files
+nmap <C-p>  :Files <CR>
+
+" Search command history
+nmap <C-c>  :History:<space><CR>
+
+" Search available commands
+nmap <Leader>c  :Commands<CR>
+
+" Search word under the cursor project-wide with K
+nnoremap K  :Rg! <C-R><C-W><CR>
+" Search all tags
+nnoremap T  :Tags<CR>
+" Search tag under the cursor
+nnoremap gt :Tags <C-R><C-W><CR>
+
+" Search a Haskell definition of word under the cursor project-wide
+nnoremap <Leader>D :Rg! ((newtype\|type\|data\|predicate\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
+" Search type definition, function definition with and without signatures
+nnoremap <Leader>d /\(\(newtype\\|type\\|data\\|predicate\\|class\)<space><C-R><C-W>\>\\|\<<C-R><C-W>\n*\s*::\\|\n\s\+\(let\)\?\s\+<C-R><C-W> .*=\)<CR>
+
+" Send file address and line number to fzf.vim's preview script
+" To be used with fast-tags
+let preview_file = plugins_dir . "/../fzf-preview.sh"
+
+command! -bang -nargs=* Tags
+  \ call fzf#vim#tags(<q-args>, {
+  \      'window': { 'width': 0.9, 'height': 0.6 },
+  \      'options': '
+  \         --with-nth 1,2
+  \         --preview-window="right:70%"
+  \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
+  \ }, <bang>0)
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rls'],
+    \ }
+
+" =======================================
+"   NEOVIM CONFIGURATION (no plugin)
+" =======================================
+" This comes after plugin setup so that
+" plugin settings may not override it.
 
 " Enable mouse scroll
 set mouse=a
 
-" Make tabs work propperly
+" Make tabs work properly
 filetype plugin indent on
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 
 " Use numbers
@@ -79,17 +429,28 @@ set signcolumn=auto
 set nobackup
 set noswapfile
 set spelllang=en_gb
-set spellfile=~/.config/nvim/spell/en.utf-8.add
-
-" Always display the status line
-set laststatus=2
 
 " Allow going beyond line end with cursor
 set virtualedit=all
 
+" Always display the status line
+set laststatus=2
+
+" Custom status line
+set statusline=
+set statusline+=%#LeftSection#
+set statusline+=\ %f
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#RightSection#
+set statusline+=\ %l:%c
+set statusline+=\ %p%%
+set statusline+=\ %y
+set statusline+=\ |
+
 " Persistent undo
 set undofile
-set undodir=$HOME/.vim/undo " This has to Exist! mkdir ~/.vim/undo
+set undodir=$HOME/.config/nvim/undo " This has to Exist! mkdir ~/.config/nvim/undo
 set undolevels=1000
 set undoreload=10000
 
@@ -99,36 +460,11 @@ set history=10000
 " Enable highlighting current line
 set cursorline
 
-" Enable true colors
-if (has('termguicolors'))
-	set termguicolors
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-" Set the colour scheme
-syntax on
-set t_Co=256
-
-" Set the colour scheme
-syntax on
-set t_Co=256
-function! g:LightTheme()
-    let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax hsc:hs --map-syntax scl:hs --theme OneHalfLight'
-    colorscheme onehalflight
-endfunction
-
-function! g:DarkTheme()
-    let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax hsc:hs --map-syntax scl:hs'
-    colorscheme candid-dark
-endfunction
-
-call g:DarkTheme()
-
 " --- Fast string searches ---
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+if executable('rg')
+  " Use rg over grep
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
 " Show tab numbers in tab bar
@@ -156,240 +492,23 @@ set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:·
 " Remove spaces on save
 autocmd BufWritePre * %s/\s\+$//e
 
-" Use Haskell syntax highlighting for Mu files
-autocmd BufRead,BufNewFile *.mu set filetype=haskell
-" Use Haskell syntax highlighting for SCL files
-autocmd BufRead,BufNewFile *.scl set filetype=haskell
+" Use Haskell syntax highlighting
+autocmd BufRead,BufNewFile *.hsc   set filetype=haskell
+autocmd BufRead,BufNewFile *.x     set filetype=haskell  " Alex files
+autocmd BufRead,BufNewFile *.y     set filetype=haskell  " Happy files
+autocmd BufRead,BufNewFile *.angle set filetype=haskell  " Angle files
+" Use Python syntax highlighting
+autocmd BufRead,BufNewFile *.tw set filetype=python    " Tupperware
+autocmd BufRead,BufNewFile *.sky set filetype=python    " Tupperware
+" Identify Markdown
+autocmd BufRead,BufNewFile *.md   set syntax=markdown
 
 " Formatters
-command  FormatJSON      :%!jq '.'
-command  FormatHaskell   :Neoformat
+command! FormatJSON      :%!jq '.'
 
-" Reload files automaticall ywhen they are changed on disk
+" Reload files automaticall when they are changed on disk
 set autoread
+
 " Triger `autoread` when files changes on disk
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
 
-" Custom status line
-set statusline=
-set statusline+=%#LeftSection#
-set statusline+=\ %f
-set statusline+=%m
-set statusline+=%=
-set statusline+=%#RightSection#
-set statusline+=\ %l:%c
-set statusline+=\ %p%%
-set statusline+=\ %y
-set statusline+=\ |
-
-" =======================================
-" Plugins Configuration
-" =======================================
-
-"coc.nvim
-" Make tab navigate through options
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" Use gd to go to definition
-nmap <silent> gd <Plug>(coc-definition)
-
-" Use H to show documentation in preview window
-nnoremap <silent> H :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Disable all silly mappings of NERDCommenter
-let g:NERDCreateDefaultMappings = 0
-autocmd VimEnter * nmap <C-_> <plug>NERDCommenterToggle
-autocmd VimEnter * vmap <C-_> <plug>NERDCommenterToggle<CR>gv
-
-" Git Signify
-" Set vim updates for 100ms
-set updatetime=100
-
-" NerdTree
-let NERDTreeShowHidden=1
-let g:NERDTreeDirArrows = 0
-let g:NERDTreeShowGitStatus = 1
-let g:NERDTreeUpdateOnWrite = 1
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:DevIconsEnableFoldersOpenClose = 1
-
-" Neoformat
-let g:neoformat_run_all_formatters = 1
-let g:neoformat_enabled_haskell = [ 'brittany' ]
-
-" vim-hoogle
-let g:hoogle_search_bin = 'stack hoogle --'
-
-" ======== FZF ===========
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
-let $FZF_PREVIEW_COMMAND = 'bat --style=numbers --color=always {} --map-syntax mu:hs --map-syntax scl:hs'
-
-nmap <C-p>  :Files <CR>
-nmap <C-l>  :Files $HOME<CR>
-
-" Search command history
-nmap <C-c>  :History:<space><CR>
-
-" Search available commands
-nmap <Leader>c  :Commands<CR>
-
-" Search word under the cursor project-wide with K
-nnoremap K  :Ag! <C-R><C-W><CR>
-" Search all tags
-nnoremap T  :Tags<CR>
-" Search tag under the cursor
-nnoremap gt :Tags <C-R><C-W><CR>
-
-" Search a Haskell or Mu definition of word under the cursor project-wide
-nnoremap <Leader>D :Ag! ((newtype\|type\|data\|class)<space><C-R><C-W>\|<C-R><C-W> ::)<CR>
-" Search type definition, function definition with and without signatures
-nnoremap <Leader>d /\(\(newtype\\|type\\|data\\|class\)<space><C-R><C-W>\>\\|\<<C-R><C-W> ::\\|\n\s\+\(let\)\?\s\+<C-R><C-W> .*=\)<CR>
-
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" Make fzf match the colour scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
-" Ag! will show search in full screen
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>, fzf#vim#with_preview('right:50%'), <bang>0)
-
-" Files! will show search in full screen with preview
-command! -bang -nargs=* Files
-  \ call fzf#vim#files(<q-args>, <bang>0 ? fzf#vim#with_preview('right:50%') : {}, <bang>0)
-
-" Send file address and line number to fzf.vim's preview script
-" Works with the following commands
-" - For Haskell use fast-tags             : find . -name "*.hs" | fast-tags -
-" - For anything else use universal-ctags : ctags -R -n
-" fzf's preview file is broken. Use the custom version instead
-let preview_file = plugins_dir . "/../fzf-preview.sh"
-
-command! -bang -nargs=* Tags
-  \ call fzf#vim#tags(<q-args>, {
-  \      'down': '40%',
-  \      'options': '
-  \         --with-nth 1,2
-  \         --preview-window="top:70%"
-  \         --preview ''' . preview_file . ' {2}:$(echo {3} | cut -d ";" -f 1)'''
-  \ }, <bang>0)
-
-let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rls'],
-    \ 'haskell': ['ghcide', '--lsp'],
-    \ }
-
-" =======================================
-"	KEY MAPPINGS
-" =======================================
-
-" Make smartcase not apply in * and # searches
-nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
-nnoremap # ?\<<C-R>=expand('<cword>')<CR>\><CR>
-
-" Copy file path
-" Relative
-nnoremap yp         :let @" = expand("%")<CR>
-" Absolute
-nnoremap yP         :let @" = expand("%:p")<CR>
-
-" Use arrows to resize screen
-nnoremap <Down>     :resize +2<CR>
-nnoremap <Up>       :resize -2<CR>
-nnoremap <Right>    :vertical resize +2<CR>
-nnoremap <Left>     :vertical resize -2<CR>
-
-" Faster scrolling
-nnoremap <C-d> 6<C-e>
-nnoremap <C-u> 6<C-y>
-
-" Resize windows easily
-map <Leader><Down>     :resize +4<CR>
-map <Leader><Up>       :resize -4<CR>
-map <Leader><Right>    :vertical resize +4<CR>
-map <Leader><Left>     :vertical resize -4<CR>
-
-" Quickly start a string replacement
-nnoremap <Leader>r :%s/<C-r><C-W>
-vnoremap <Leader>r "ay::%s/<C-r>a/
-
-" Quickly start a string search
-nmap <Leader>f :Rg<Space>
-
-" --- Terminal ---
-if has("nvim")
-    " Make C-W take terminal to normal mode
-    tmap <C-w> <C-\><C-n><C-w>
-endif
-
-"Open terminal with our setup file loaded
-nmap <Leader>T            :vsplit \| execute "terminal" \| startinsert <CR>
-tmap <Leader>T  <C-\><C-n>:vsplit \| execute "terminal" \| startinsert <CR>
-nmap <Leader>t            :split  \| execute "terminal" \| startinsert <CR>
-tmap <Leader>t  <C-\><C-n>:split  \| execute "terminal" \| startinsert <CR>
-
-" Force quit a window
-tnoremap <Leader>q <C-\><C-n>:bd!<CR>
-noremap  <Leader>q      <C-w>:bd!<CR>
-
-
-" Fast buffer switching
-" next buffer
-nnoremap <Leader>n           :bnext<CR>
-tnoremap <Leader>n <C-\><C-n>:bnext<CR>
-" previous buffer
-nnoremap <Leader>p           :bprevious<CR>
-tnoremap <Leader>p <C-\><C-n>:bprevious<CR>
-" Show all open buffers
-nnoremap <Leader><Space>          :Buf<CR>
-tnoremap <Leader><Space> <C-\><C-n>:Buf<CR>
-
-" Delete current buffer without losing window
-nnoremap <C-w>d      :bp<CR><C-w>:bd #<CR>
-
-" Fast tab switching
-function! s:MapTabKey(tabNumber)
-    execute "nnoremap <Leader>" . a:tabNumber . " :" a:tabNumber . "tabn<CR>"
-    execute "tnoremap <Leader>" . a:tabNumber . " <C-\\><C-n>:" a:tabNumber . "tabn<CR>"
-endfunction
-
-call s:MapTabKey(1)
-call s:MapTabKey(2)
-call s:MapTabKey(3)
-call s:MapTabKey(4)
-call s:MapTabKey(5)
-call s:MapTabKey(6)
-call s:MapTabKey(7)
-call s:MapTabKey(7)
-call s:MapTabKey(8)
-call s:MapTabKey(9)
-
-" Recover selection after indenting
-" we need to use 'autocmd VimEnter so that this doesn't get overriden by plugins
-autocmd VimEnter * vnoremap > >gv
-autocmd VimEnter * vnoremap < <gv
