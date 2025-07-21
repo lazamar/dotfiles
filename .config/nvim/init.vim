@@ -144,6 +144,9 @@ Plug 'rust-lang/rust.vim'
 Plug 'http://github.com/pappasam/jedi-language-server', { 'branch': 'main' }
 Plug 'http://github.com/mfussenegger/nvim-lint'
 
+" HTML editing. Use Ctrl+Y<Leader> to trigger it in insert mode.
+Plug 'mattn/emmet-vim'
+
 " LSP
 " Enables Neovim's native LSP
 Plug 'neovim/nvim-lspconfig'
@@ -188,6 +191,10 @@ require'compe'.setup {
 EOF
 
 " ======== Neovim's LSP ===========
+
+" Show information about item under cursor.
+nnoremap H :lua vim.lsp.buf.hover()<CR>
+
 lua << EOF
 -- setup language servers
 local lspconfig = require('lspconfig')
@@ -219,6 +226,9 @@ lspconfig.elmls.setup {
 
 -- TypeScript language server
 lspconfig.ts_ls.setup {}
+
+-- ESLint language server
+lspconfig.eslint.setup {}
 
 -- Python language server
 lspconfig.jedi_language_server.setup({
@@ -361,7 +371,7 @@ let g:fzf_action = {
 nmap <C-p>  :Files <CR>
 
 " Search command history
-nmap <C-c>  :History:<space><CR>
+nmap <C-c> :History<space><CR>
 
 " Search available commands
 nmap <Leader>c  :Commands<CR>
@@ -511,4 +521,5 @@ set autoread
 
 " Triger `autoread` when files changes on disk
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+
 
