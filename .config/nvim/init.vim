@@ -1,4 +1,3 @@
-
 " ===============================================================================
 "   Marcelo Lazaroni Vim Config
 " ===============================================================================
@@ -143,6 +142,7 @@ Plug 'preservim/tagbar'
 Plug 'rust-lang/rust.vim'
 Plug 'http://github.com/pappasam/jedi-language-server', { 'branch': 'main' }
 Plug 'http://github.com/mfussenegger/nvim-lint'
+Plug 'sbdchd/neoformat' " JavaScript Prettier
 
 " HTML editing. Use Ctrl+Y<Leader> to trigger it in insert mode.
 Plug 'mattn/emmet-vim'
@@ -198,6 +198,9 @@ nnoremap H :lua vim.lsp.buf.hover()<CR>
 lua << EOF
 -- setup language servers
 local lspconfig = require('lspconfig')
+
+-- clang
+vim.lsp.enable('clangd')
 
 -- Enable errors showing in-line
 vim.diagnostic.config({ virtual_text = true })
@@ -329,6 +332,12 @@ EOF
 " ======== rust-lang  ===========
 " Run rustfmt on save
 let g:rustfmt_autosave = 1
+
+" ======== javascript ===========
+" Use prettier from node_modules
+let g:neoformat_try_node_exe = 1
+autocmd BufWritePre *.js Neoformat
+autocmd BufWritePre *.ts Neoformat
 
 " ======== NERDCommenter ===========
 " Disable all silly mappings of NERDCommenter
@@ -521,5 +530,3 @@ set autoread
 
 " Triger `autoread` when files changes on disk
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
-
-
