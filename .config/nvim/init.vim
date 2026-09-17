@@ -1,9 +1,13 @@
+
 " ===============================================================================
 "   Marcelo Lazaroni Vim Config
 " ===============================================================================
 
 set notermguicolors
 colorscheme vim
+
+" make hover have a nicer background colour.
+highlight NormalFloat ctermbg=238
 
 set nocompatible
 syntax on
@@ -35,6 +39,8 @@ nnoremap // :nohlsearch<CR>
 nnoremap yp         :let @" = expand("%")<CR>
 " Absolute
 nnoremap yP         :let @" = expand("%:p")<CR>
+" Copy the system's filepath
+nnoremap yYP :let @+ = expand("%:p")<CR>
 
 " Use arrows to resize screen
 nnoremap <Down>     :resize +2<CR>
@@ -338,6 +344,7 @@ let g:rustfmt_autosave = 1
 let g:neoformat_try_node_exe = 1
 autocmd BufWritePre *.js Neoformat
 autocmd BufWritePre *.ts Neoformat
+autocmd BufWritePre *.tsx Neoformat
 
 " ======== NERDCommenter ===========
 " Disable all silly mappings of NERDCommenter
